@@ -1,0 +1,62 @@
+package com.example.database.Order;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.database.Customer.customerMapper;
+import com.example.database.Employee.employeeMapper;
+import com.example.database.Product.productInOrderResponseDto;
+import com.example.database.Product.productMapper;
+import com.example.database.Relationship.has;
+import com.example.database.Repository.customerRepo;
+import com.example.database.Repository.employeeRepo;
+import com.example.database.Repository.productRepo;
+
+@Service
+public class orderMapper {
+    @Autowired
+    private customerRepo customerRepo;
+    @Autowired
+    private employeeRepo employeeRepo;
+    @Autowired
+    private productRepo productRepo;
+    @Autowired
+    private customerMapper customerMapper;
+    @Autowired
+    private productMapper productMapper;
+    @Autowired
+    private employeeMapper employeeMapper;
+    public _order t_order(orderDto dto,String employee_username){
+        var order= new _order();
+        customerRepo.findByUsername(dto.customer_username()).addOrder(order);
+        employeeRepo.findByUsername(employee_username).addOrder(order);
+        order.setState(true);
+        order.setOrder_time(dto.order_time());
+        order.setPayment_method(dto.payment_method());
+        var producList = dto.producList();
+        var total_charge = 0;
+        for(var i : producList){
+            var has = new has();
+            has.setQuantity(i.quantity());
+            order.addHas(has);
+            var product = productRepo.findById(i.productId()).orElse(null);
+            product.addHas(has);
+            total_charge+=product.getUnit_price()*i.quantity()*product.getDiscount();
+        }
+        order.setTotal_charge(total_charge);
+        return order;
+    }
+    public orderResponseDto tOrderResponseDto(_order order){
+        List<productInOrderResponseDto> productInOrderResponseDtoList = new ArrayList<>();
+        var list = order.getHases();
+        for(has i:list){
+            var productInOrderResponseDto = new productInOrderResponseDto(productMapper.toProductResponseDto(i.getProduct()),i.getQuantity());
+            productInOrderResponseDtoList.add(productInOrderResponseDto);
+        }
+        return new orderResponseDto(order.getId(),order.getTotal_charge(),order.getPayment_method(),order.getOrder_time(),order.getEmployee().getName(),order.getCustomer().getName(),productInOrderResponseDtoList);
+    }
+}
