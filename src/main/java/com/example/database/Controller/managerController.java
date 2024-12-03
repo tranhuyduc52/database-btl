@@ -36,6 +36,7 @@ import com.example.database.Shift.shiftDto;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -101,12 +102,12 @@ public class managerController {
     public List<scheduleResponseDto> getAllSchedule() {
         return scheduleService.getAllSchedule();
     }
-    @PutMapping("/update/employee/salary")
+    @PatchMapping("/update/employee/salary")
     public void putMethodName(@RequestBody employeeCalSalaryDto dto) {
         //TODO: process PUT request
         employeeService.calculateSalary(dto.id(),dto.localDateTime().getMonthValue(),dto.localDateTime().getYear());
     }
-    @PutMapping("update/employee/job")
+    @PatchMapping("update/employee/job")
     public void updateEmployeeJob(@RequestBody employeeUpdateJobDto dto) {
         //TODO: process PUT request
         employeeService.updateEmployeeJob(dto.position(),dto.unitSalary(),dto.id());
@@ -120,22 +121,22 @@ public class managerController {
         return orderService.getAllOrder();
     }
     
-    @PutMapping("delete/gift")
+    @PatchMapping("delete/gift")
     public void delGift(int id) {
         //TODO: process PUT request
         giftService.hideGift(id);
     }
-    @PutMapping("delete/product")
+    @PatchMapping("delete/product")
     public void delProduct(int id) {
         //TODO: process PUT request
         productService.hideProduct(id);;
     }
-    @PutMapping("update/product")
+    @PatchMapping("update/product")
     public void updateProduct(@RequestBody productUpdateDto dto) {
         //TODO: process PUT request
         productService.updateProduct(dto);
     }
-    @PutMapping("update/gift")
+    @PatchMapping("update/gift")
     public void updateGift(@RequestBody giftResponseDto dto) {
         //TODO: process PUT request
         giftService.updateGift(dto);
