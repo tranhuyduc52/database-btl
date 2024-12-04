@@ -21,6 +21,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,10 +63,19 @@ public class customerController {
         manager.deleteUser(username);
     }
     @PatchMapping("/updateInfo")
-    public void updateCustomerInfo(Principal principal,@RequestBody customerUpdateDto dto) {
+public ResponseEntity<?> updateCustomerInfo(Principal principal, @RequestBody customerUpdateDto dto) {
+    try {
         var username = principal.getName();
-        customerService.updateCustomerInfo(dto,username);
+        customerService.updateCustomerInfo(dto, username);
+        return ResponseEntity.ok("Customer info updated successfully");
+    } catch (IllegalArgumentException e) {
+        // Lỗi do dữ liệu không hợp lệ
+        return ResponseEntity.badRequest().body("Invalid data: " + e.getMessage());
+    } catch (Exception e) {
+        // Lỗi khác
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
     }
+}
     @GetMapping("/order/view")
     public List<orderResponseDto> getMethodName(Principal principal) {
         return customerService.getOrder(principal.getName());
