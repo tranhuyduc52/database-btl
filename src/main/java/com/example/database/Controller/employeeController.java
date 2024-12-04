@@ -15,6 +15,7 @@ import com.example.database.Service.orderService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class employeeController {
         //TODO: process POST request
         orderService.createOrder(dto,principal.getName());
     }
-    @PutMapping("/update/info")
+    @PatchMapping("/update/info")
     public void updateInfo(@RequestBody employeeUpdateDto dto,Principal principal) {
         employeeService.updateEmployee(dto,principal.getName());
     }
