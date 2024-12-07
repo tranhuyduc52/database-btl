@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.example.database.jwt.AuthEntryPointJwt;
 import com.example.database.jwt.AuthTokenFilter;
@@ -43,21 +46,21 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain MySecurityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(authorizeRequests ->
+        http.cors(withDefaults()).authorizeHttpRequests(authorizeRequests ->
         authorizeRequests.requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated()
-        )
-        .logout((logout) ->
-                 logout.deleteCookies("remove")
-                     .invalidateHttpSession(true)
-                     .logoutUrl("/logout")
-                     .logoutSuccessUrl("/logout-success")
-                );
-        http.sessionManagement(
-                session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS)
         );
+        // .logout((logout) ->
+        //          logout.deleteCookies("remove")
+        //              .invalidateHttpSession(true)
+        //              .logoutUrl("/logout")
+        //              .logoutSuccessUrl("/logout-success")
+                // );
+        // http.sessionManagement(
+        //         session ->
+        //                 session.sessionCreationPolicy(
+        //                         SessionCreationPolicy.STATELESS)
+        // );
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
         // http.formLogin(formLogin -> 
         //         formLogin.loginPage("/signin") // Custom login page
@@ -71,7 +74,6 @@ public class SecurityConfig {
                 )
         );
         http.csrf(csrf -> csrf.disable());
-        //http.cors(cors-> cors.disable());
         http.addFilterBefore(authenticationJwtTokenFilter(),
                 UsernamePasswordAuthenticationFilter.class);
 

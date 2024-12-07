@@ -1,5 +1,7 @@
 import './UserProduct.css';
 import { useState } from 'react';
+import React, { Component }  from 'react';
+
 
 
 function UserDetailProduct({ toggle, toggleVisibility}) {

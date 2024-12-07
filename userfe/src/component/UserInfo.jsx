@@ -2,6 +2,8 @@ import './UserInfo.css';
 import { useRef } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import React, { Component }  from 'react';
+
 
 function UserFormInfo() {
     const nameRef = useRef();
@@ -10,7 +12,7 @@ function UserFormInfo() {
     const phoneRef = useRef();
     const dobRef = useRef();
 
-    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE3MzMzMjc1NTQsImV4cCI6MTczMzM1NzU1NH0.sUk8XYAufAA4fhh4huArXwL6zt5s_mQqAr9EB4jGKVoAnVeqlfw84p3cUKHjDTzP";
+    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE3MzM1NDA2ODAsImV4cCI6MTczMzU3MDY4MH0.uz9_LqUG-ckQClfFuIm0g7LEhpQjP2AffSKbA9pWz1gHMtHwjLzXfd0_K0jhXsi5";
 
     const [error, setError] = useState(null);
 
@@ -27,9 +29,9 @@ function UserFormInfo() {
             dob:userDoB, 
             phoneNumber:userPhone, 
             address: userAddress,
-            gender: "Nam",
             name: userName,
-            email:userEmail
+            email:userEmail,
+            gender:"Nam"
         };
         console.log(user);
 

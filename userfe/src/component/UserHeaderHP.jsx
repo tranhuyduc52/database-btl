@@ -1,4 +1,6 @@
 import './UserHeaderHP.css'
+import React, { Component }  from 'react';
+
 
 function HeaderHomePage() {
     return (

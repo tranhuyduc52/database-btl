@@ -2,6 +2,8 @@ import './UserRegist.css';
 import { useRef } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import React, { Component }  from 'react';
+
 
 function UserRegistInterface({ toggle }) {
     const usernameRef = useRef();
