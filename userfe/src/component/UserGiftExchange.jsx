@@ -1,4 +1,6 @@
 import './UserGiftExchange.css'
+import React, { Component }  from 'react';
+
 
 function UserGiftExchange() {
     return (
