@@ -103,6 +103,20 @@ public class PublicController {
         customerService.createCustomer(dto);
         return "Your account is created successfully!";
     }
+    //api này không cần code vào react, t dùng để tạo tài khoản admin
+    @PostMapping("admin")
+    public String createManager(@RequestBody LoginRequest dto) 
+    {
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
+        if(manager.userExists(dto.getUsername())){return "Username already exists";}
+
+        UserDetails user = User.withUsername(dto.getUsername())
+        .password(passwordEncoder.encode(dto.getPassword()))
+        .roles("MANAGER")
+        .build();
+        manager.createUser(user);
+        return "Your account is created successfully!";
+    }
 
     @GetMapping("/menu")
     public List<productResponseDto> getAllProducts() {

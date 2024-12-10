@@ -4,11 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.database.Branch.branch;
 import com.example.database.Customer.customer;
 import com.example.database.Employee.employee;
 import com.example.database.Relationship.has;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -36,9 +34,7 @@ public class _order {
     @ManyToOne
     @JoinColumn(name = "employee_ID")
     private employee employee; 
-    @ManyToOne
-    @JoinColumn(name = "branch_ID")
-    private branch branch;
+    
     @ManyToOne
     @JoinColumn(name = "customer_ID")
     private customer customer;

@@ -3,7 +3,10 @@ package com.example.database.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import com.example.database.Employee.employee;
@@ -21,6 +24,9 @@ public class employeeService {
     private employeeRepo repo;
     @Autowired
     private employeeMapper employeeMapper;
+    @Autowired
+    DataSource dataSource;
+    private JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
     public List<employeeResponseDto> findAllEmployee(){
         return repo.findAll().stream()
         .map(employeeMapper::tEmployeeResponseDto)
@@ -31,6 +37,7 @@ public class employeeService {
     }
     public void delEmployee(int id){
         repo.deleteById(id);
+        manager.deleteUser(repo.findById(id).orElse(null).getPhoneNumber());
     }
     public void updateEmployee(employeeUpdateDto dto){
         repo.updateEmployeeInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());

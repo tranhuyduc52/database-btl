@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.database.Branch.branch;
 import com.example.database.Order._order;
 import com.example.database.Relationship.schedule;
 
@@ -41,9 +40,7 @@ public class employee {
     private List<schedule> schedules = new ArrayList<>();
     @OneToMany(mappedBy = "employee")
     private List<_order> _orders = new ArrayList<>();
-    @ManyToOne()
-    @JoinColumn(name = "branch_ID")
-    private branch branch;
+    
     public void addOrder(_order order){
         this._orders.add(order);
         order.setEmployee(this);
