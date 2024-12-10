@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.database.Customer.customer;
-import com.example.database.myenum.GenderEnum;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -25,7 +24,7 @@ public interface customerRepo extends JpaRepository<customer,Integer>{
     @Query("update customer a set a.dob=:dob,a.address=:address,a.gender=:gender,a.name=:name where a.phoneNumber=:phoneNumber")
     public void updateCustomerInfo(@Param("dob") Date dob,
     @Param("address") String address,
-    @Param("gender") GenderEnum gender,
+    @Param("gender") char gender,
     @Param("name") String name,
     @Param("phoneNumber") String phoneNumber
                                    );

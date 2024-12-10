@@ -8,11 +8,12 @@ import React from 'react';
 function UserFormInfo() {
     const nameRef = useRef();
     const addressRef = useRef();
-    const emailRef = useRef();
     const phoneRef = useRef();
     const dobRef = useRef();
 
     const [selectedGender, setSelectedGender] = useState("");
+
+    
 
     const handleGenderChange = (event) => {
         setSelectedGender(event.target.value);
@@ -23,6 +24,17 @@ function UserFormInfo() {
     const handleClick=async (e) => {
         e.preventDefault();
         
+        const name = nameRef.current.value.trim();
+        const address = addressRef.current.value.trim();
+        const phone = phoneRef.current.value.trim();
+        const dob = dobRef.current.value;
+        const gender = document.querySelector('input[name="gender"]:checked');
+
+        if (!name || !address || !phone || !dob || !gender) {
+            alert("Vui lòng điền đầy đủ thông tin trước khi gửi!");
+            return;
+        }
+
         const token = localStorage.getItem("token");
         console.log(token);
 
@@ -83,15 +95,6 @@ function UserFormInfo() {
                         id='userAddress'
                         placeholder='Nhập địa chỉ'
                         ref={addressRef}/>
-                    </li>
-                    <li className="userInfo-form-li">
-                        <label htmlFor="userEmail" className="userInfo-form-label">
-                            Email
-                        </label>
-                        <input type="text" className="userInfo-form-input" 
-                        id='userEmail'
-                        placeholder='Nhập email'
-                        ref={emailRef}/>
                     </li>
                     <li className="userInfo-form-li">
                         <label htmlFor="UserPhone" className="userInfo-form-label">

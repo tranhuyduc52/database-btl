@@ -7,7 +7,6 @@ import java.util.List;
 import com.example.database.Order._order;
 import com.example.database.Relationship.exchange;
 import com.example.database.Relationship.review;
-import com.example.database.myenum.GenderEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ public class customer {
     private Date dob;
     private String phoneNumber; //function as username
     private String address;
-    private GenderEnum gender;
+    private char gender;
     private String name;
     private int point;
     private String password;

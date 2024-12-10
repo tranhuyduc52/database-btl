@@ -129,8 +129,8 @@ function UserLoginInterface({ toggle }) {
             setResponse(res.data);
 
             setToken(res.data.jwtToken);
-            // localStorage.removeItem("token");
             localStorage.setItem("token", token);
+            console.log(token);
             setError(null); // Reset lỗi nếu có
         } catch (err) {
             setError(err.message || "Something went wrong");
