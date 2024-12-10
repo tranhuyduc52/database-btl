@@ -2,7 +2,10 @@ import './UserRegist.css';
 import { useRef } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import React, { Component }  from 'react';
+import React, { createContext }  from 'react';
+
+const AuthContext = createContext();
+
 
 
 function UserRegistInterface({ toggle }) {
@@ -19,7 +22,7 @@ function UserRegistInterface({ toggle }) {
         const password = passwordRef.current.value;
 
         const regist = {
-            username : username, 
+            phoneNumber : username, 
             password : password};
         // console.log(JSON.stringify(regist))
 
@@ -34,12 +37,13 @@ function UserRegistInterface({ toggle }) {
                    // withCredentials: true, // Nếu cần gửi cookies/token
                 }
             );
-            setResponse(res.data); // Lưu phản hồi từ server
+            setResponse(res.data);
             setError(null); // Reset lỗi nếu có
         } catch (err) {
             setError(err.message || "Something went wrong");
         }
     }
+
 
     return (
         <div className="userRegist-midBox"
@@ -95,6 +99,8 @@ function UserLoginInterface({ toggle }) {
     const usernameRef = useRef();
     const passwordRef = useRef();
 
+    const [token, setToken] = useState("");
+
     const [response, setResponse] = useState("");
     const [error, setError] = useState(null);
 
@@ -121,7 +127,10 @@ function UserLoginInterface({ toggle }) {
                 }
             );
             setResponse(res.data);
-            console.log(res.data);
+
+            setToken(res.data.jwtToken);
+            localStorage.setItem("token", token);
+            console.log(token);
             setError(null); // Reset lỗi nếu có
         } catch (err) {
             setError(err.message || "Something went wrong");

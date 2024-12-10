@@ -1,6 +1,7 @@
 import './UserProduct.css';
 import { useState } from 'react';
-import React, { Component }  from 'react';
+import React, { useEffect }  from 'react';
+import axios from 'axios';
 
 
 
@@ -120,6 +121,52 @@ function UserProduct() {
         settoggle(!toggle);
     }
 
+    const [errror, seterror] = useState("");
+    const[product, setproduct] = useState([]);
+
+    const chunkArray = (arr, chunkSize) => {
+        const chunks = [];
+
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            chunks.push(arr.slice(i, i + chunkSize));
+        }
+        return chunks;
+    }
+
+    const Chunk = (arr, start) => {
+        const chunks = [];
+        chunks.push(arr.slice(start, start + 2));
+        return chunks;
+    }
+
+    useEffect(() => {
+        const FetchProduct = async (e) => {
+            try {
+                const token = localStorage.getItem("token");
+                const res = await axios.get(
+                    "http://localhost:8080/public/menu",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        }
+                    }
+                )
+
+                setproduct(res.data);
+                // console.log(res.data);
+            }
+            catch(err) {
+                seterror(err.message || "Something went wrong!")
+            }
+        }
+
+        FetchProduct();
+    }, [])
+
+    const productChunks = chunkArray(product, 4);
+    const LbestChoice = Chunk(product, 0);
+    const RbestChoice = Chunk(product, 2);
     return (
         <>
             <div className="product">
@@ -132,45 +179,42 @@ function UserProduct() {
                                 nơi tôn vinh hương vị đậm đà và nghệ thuật pha chế. 
                                 Từ hạt cà phê nguyên chất đến các loại cà phê pha sẵn, mỗi sản phẩm đều là minh chứng cho chất lượng, phong cách, và sự quyến rũ vượt thời gian của cà phê.
                             </p>
-                            <div className="product-best-choice-2img">
-                                <div className="product-best-choice-image">
-                                    <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                    />
-                                    <div className="product-best-choice-image-intro">
-                                        <h6>Phindi Cassia</h6>
-                                        <p>55.000đ</p>
-                                    </div>
+                            {LbestChoice.map((chunk, indexD) => (
+                                console.log(chunk),
+                                <div className='product-best-choice-2img'
+                                key={indexD}>
+                                    {chunk.map((item, index) => (
+                                        <div key={index}
+                                        className='product-best-choice-image'>
+                                            <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt="" />
+                                            <div className="product-best-choice-image-intro">
+                                                <h6>{item.name}</h6>
+                                                <p>{item.unit_price}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="product-best-choice-image">
-                                    <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                    />
-                                    <div className="product-best-choice-image-intro">
-                                        <h6>Phindi Cassia</h6>
-                                        <p>55.000đ</p>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                         <div className="product-best-choice-right">
-                            <div className="product-best-choice-2img">
-                                <div className="product-best-choice-image">
-                                    <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                    />
-                                    <div className="product-best-choice-image-intro">
-                                        <h6>Phindi Cassia</h6>
-                                        <p>55.000đ</p>
-                                    </div>
+                            {RbestChoice.map((chunk, indexD) => (
+                                <div key={indexD}
+                                className='product-best-choice-2img'>
+                                    {chunk.map((item, index) => (
+                                        <div key={index}
+                                        className='product-best-choice-image'>
+                                            <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} 
+                                            alt=""/>
+                                            <div className="product-best-choice-image-intro">
+                                                <h6>{item.name}</h6>
+                                                <p>{item.unit_price}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="product-best-choice-image">
-                                    <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                    />
-                                    <div className="product-best-choice-image-intro">
-                                        <h6>Phindi Cassia</h6>
-                                        <p>55.000đ</p>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
+                        
                     </div>
                 </div>
                 <div className="product-most-popular">
@@ -182,52 +226,29 @@ function UserProduct() {
                             Khám phá những sản phẩm mới nhất tại cửa hàng</p>
                         <table className="product-most-popular-table">
                             <tbody className="product-most-popular-body">
-                                <tr className="most-popular-table-row">
-                                    <td className="most-popular-table-cl1">
-                                        <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                        onClick={toggleDetail}/>
-                                        <p className="most-popular-table-name-product"
-                                        onClick={toggleDetail}>
-                                            Phindi Cassia
-                                        </p>
-                                        <p className="most-popular-table-price">
-                                            55.000đ
-                                        </p>
-                                    </td>
-                                    <td className="most-popular-table-cl1">
-                                        <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                        onClick={toggleDetail}/>
-                                        <p className="most-popular-table-name-product"
-                                        onClick={toggleDetail}>
-                                            Phindi Cassia
-                                        </p>
-                                        <p className="most-popular-table-price">
-                                            55.000đ
-                                        </p>
-                                    </td>
-                                    <td className="most-popular-table-cl1">
-                                        <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                        onClick={toggleDetail}/>
-                                        <p className="most-popular-table-name-product"
-                                        onClick={toggleDetail}>
-                                            Phindi Cassia
-                                        </p>
-                                        <p className="most-popular-table-price">
-                                            55.000đ
-                                        </p>
-                                    </td>
-                                    <td className="most-popular-table-cl1">
-                                        <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt=""
-                                        onClick={toggleDetail}/>
-                                        <p className="most-popular-table-name-product"
-                                        onClick={toggleDetail}>
-                                            Phindi Cassia
-                                        </p>
-                                        <p className="most-popular-table-price">
-                                            55.000đ
-                                        </p>
-                                    </td>
-                                </tr>
+                                {productChunks.map((chunk, rowIndex) => (
+                                    <tr key={rowIndex} className='most-popular-table-row'>
+                                        {chunk.map((product, index) => (
+                                            <td key={index} className='most-popular-table-cl1'>
+                                                <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} 
+                                                alt="" 
+                                                onClick={() => toggleDetail(product)}/>
+                                                <p className="most-popular-table-name-product"
+                                                onClick={() => toggleDetail(product)}>
+                                                    {product.name}
+                                                </p>
+                                                <p className="most-popular-table-price">
+                                                    {product.unit_price} đ
+                                                </p>
+                                            </td>
+                                        ))}
+                                        {chunk.length < 4 && 
+                                            Array.from({length: 4 - chunk.length}).map((_, index) => (
+                                                <td key={`empty-${index}`} className='most-popular-table-cl1'>
+                                                </td>
+                                            ))}
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>

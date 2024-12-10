@@ -19,8 +19,9 @@
     border-radius: 10px;
     margin: 0 20px;
     position: relative;
+    box-sizing: border-box;
 }
-.userInfo-form-title {
+.userInfo-form-title, .Pinfo-title {
     margin: 0;
     padding: 0;
     display: inline;
@@ -63,4 +64,28 @@
     background-color: #029b8c;
     transition: all 0.2s ease;
     cursor: pointer;
+}
+.userInfo-form-input-group {
+    display: flex;
+    flex-direction: row;
+}
+.userInfo-form-input-group label {
+    display: flex;
+    flex-direction: row;
+}
+.PersonalInfo {
+    width: 50%;
+    margin: 0 20px;
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.Pinfo {
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0;
+}
+.Pinfo1 {
+    font-weight: 500;
 }

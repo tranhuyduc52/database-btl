@@ -8,7 +8,7 @@ import UserRegist from './component/UserRegist';
 function UserLogin() {
   return (
     <>
-      <UserRegist/>;
+      <UserRegist/>
     </>
   );
 };
@@ -16,10 +16,10 @@ function UserLogin() {
 function UserPage() {
   return (
     <>
-      <HeaderHomePage/>;
-      <UserProduct/>;
-      <UserGiftExchange/>;
-      <UserInfo/>;
+      <HeaderHomePage/>
+      <UserProduct/>
+      <UserGiftExchange/>
+      <UserInfo/>
     </>
   );
 }
@@ -28,8 +28,8 @@ function UserPage() {
 function App() {
   return (
     <>
-      <UserLogin/>;
-      {/* <UserPage/>; */}
+      <UserLogin/>
+      <UserPage className="UserPage"/>
     </>
   );
 }
