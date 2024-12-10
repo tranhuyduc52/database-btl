@@ -22,14 +22,11 @@ public class orderService {
         repo.save(orderMapper.t_order(dto,phoneNumber));
     }
     public List<orderResponseDto> getAllOrder(){
-        return repo.findByState(true).stream()
+        return repo.findAll().stream()
         .map(orderMapper::tOrderResponseDto)
         .collect(Collectors.toList());
     }
     public void delOrder(int id){
         repo.deleteById(id);
-    }
-    public void hideOrder(int id){
-        repo.hideProduct(id);
     }
 }

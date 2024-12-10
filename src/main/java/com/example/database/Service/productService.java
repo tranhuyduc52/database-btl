@@ -25,7 +25,7 @@ public class productService {
         repo.save(mapper.tProduct(dto));
     }
     public List<productResponseDto> getAllProducts(){
-        return repo.findByState(true).stream()
+        return repo.findByIsAvailable(true).stream()
         .map(mapper::toProductResponseDto)
         .collect(Collectors.toList());
     }

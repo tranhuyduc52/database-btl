@@ -13,10 +13,10 @@ import java.util.List;
 
 
 public interface productRepo extends JpaRepository<product,Integer>{
-    List<product> findByState(boolean state);
+    List<product> findByIsAvailable(boolean isAvailable);
     @Modifying
     @TransactionScoped
-    @Query("update product a set a.state=false where a.id=:id")
+    @Query("update product a set a.isAvailable=false where a.id=:id")
     void hideProduct(@Param("id") int id);
     @Modifying
     @TransactionScoped

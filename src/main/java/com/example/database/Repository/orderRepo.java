@@ -13,9 +13,5 @@ import java.util.List;
 
 
 public interface orderRepo extends JpaRepository<_order,Integer>{
-    List<_order> findByState(boolean state);
-    @Modifying
-    @TransactionScoped
-    @Query("update _order a set a.state=false where a.id=:id")
-    void hideProduct(@Param("id") int id);
+    
 }
