@@ -26,7 +26,7 @@ public class customer {
     @GeneratedValue
     private int id;
     private Date dob;
-    private int phoneNumber; //function as username
+    private String phoneNumber; //function as username
     private String address;
     private GenderEnum gender;
     private String name;

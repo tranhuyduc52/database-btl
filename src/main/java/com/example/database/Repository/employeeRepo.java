@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public interface employeeRepo extends JpaRepository<employee,Integer>{
-    public employee findByPhoneNumber(int phoneNumber);
+    public employee findByPhoneNumber(String phoneNumber);
     @Transactional
     @Modifying
     @Query("update employee a set a.dob=:dob,a.address=:address,a.gender=:gender,a.name=:name where a.phoneNumber=:phoneNumber")
@@ -27,7 +27,7 @@ public interface employeeRepo extends JpaRepository<employee,Integer>{
                                     @Param("address") String address,
                                     @Param("gender") GenderEnum gender,
                                     @Param("name") String name,
-                                    @Param("phoneNumber") int phoneNumber
+                                    @Param("phoneNumber") String phoneNumber
                                    );
     @Transactional
     @Modifying

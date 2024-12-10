@@ -16,7 +16,7 @@ public class exchangeMapper {
     public exchangeResponseDto tExchangeResponseDto(exchange exchange){
         return new exchangeResponseDto(exchange.getQuantity(),exchange.getDate(),exchange.getCustomer().getName(),exchange.getGift().getName());
     }
-    public exchange tExchange(exchangeDto dto,int phoneNumber){
+    public exchange tExchange(exchangeDto dto,String phoneNumber){
         var exchange = new exchange();
         exchange.setDate(dto.date());
         exchange.setQuantity(dto.quantity());

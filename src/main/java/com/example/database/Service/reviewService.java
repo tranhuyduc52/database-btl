@@ -17,7 +17,7 @@ public class reviewService {
     private reviewMapper reviewMapper;
     @Autowired
     private customerRepo customerRepo;
-    public void createReview(reviewDto dto,int phoneNumber){
+    public void createReview(reviewDto dto,String phoneNumber){
         var review = reviewMapper.tReview(dto);
         customerRepo.findByPhoneNumber(phoneNumber).addReview(review);
         repo.save(review);
