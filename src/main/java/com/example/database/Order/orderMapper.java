@@ -30,7 +30,7 @@ public class orderMapper {
     private productMapper productMapper;
     @Autowired
     private employeeMapper employeeMapper;
-    public _order t_order(orderDto dto,int phoneNumber){
+    public _order t_order(orderDto dto,String phoneNumber){
         var order= new _order();
         customerRepo.findByPhoneNumber(dto.customerPhoneNumber()).addOrder(order);
         employeeRepo.findByPhoneNumber(phoneNumber).addOrder(order);

@@ -71,9 +71,9 @@ public class managerController {
     public String createEmployee(@RequestBody employeeDto dto) 
     {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        if(manager.userExists(String.valueOf(dto.phoneNumber()))){return "Username already exists";}
+        if(manager.userExists(dto.phoneNumber())){return "Username already exists";}
 
-        UserDetails user = User.withUsername(String.valueOf(dto.phoneNumber()))
+        UserDetails user = User.withUsername(dto.phoneNumber())
         .password(passwordEncoder.encode(dto.password()))
         .roles("EMPLOYEE")
         .build();

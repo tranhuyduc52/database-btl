@@ -25,28 +25,28 @@ public class customerService {
     private orderMapper orderMapper;
     @Autowired
     private customerMapper customerMapper;
-    public customerUpdateDto getInfo(int phoneNumber){
+    public customerUpdateDto getInfo(String phoneNumber){
         return customerMapper.tCustomerUpdateDto( repo.findByPhoneNumber(phoneNumber));
     }
-    public List<exchangeResponseDto> getExchange(int phoneNumber){
+    public List<exchangeResponseDto> getExchange(String phoneNumber){
         return repo.findByPhoneNumber(phoneNumber)
         .getExchanges().stream().map(exchangeMapper::tExchangeResponseDto)
         .collect(Collectors.toList());
     }
-    public List<orderResponseDto> getOrder(int phoneNumber){
+    public List<orderResponseDto> getOrder(String phoneNumber){
         return repo.findByPhoneNumber(phoneNumber).get_orders()
         .stream().map(orderMapper::tOrderResponseDto).collect(Collectors.toList());
     }
     public void createCustomer(customerDTO dto){
         repo.save(customerMapper.toCustomer(dto));
     }
-    public void delCustomerByUsername(int phoneNumber){
+    public void delCustomerByUsername(String phoneNumber){
         repo.deleteByPhoneNumber(phoneNumber);
     }
     public void updateCustomerInfo(customerUpdateDto dto){
         repo.updateCustomerInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());
     }
-    public int getPoint(int phoneNumber){
+    public int getPoint(String phoneNumber){
         return repo.findByPhoneNumber(phoneNumber).getPoint();
     }
 }

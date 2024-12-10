@@ -7,7 +7,7 @@ import com.example.database.myenum.GenderEnum;
 
 public record employeeUpdateDto(
     Date dob,
-    int phoneNumber,
+    String phoneNumber,
     String address,
     GenderEnum gender,
     String name
