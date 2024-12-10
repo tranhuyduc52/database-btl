@@ -1,8 +1,8 @@
 import './UserInfo.css';
-import { useRef } from 'react';
+import { use, useRef } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
-import React, { Component }  from 'react';
+import { useState, useEffect } from 'react';
+import React from 'react';
 
 
 function UserFormInfo() {
@@ -12,16 +12,22 @@ function UserFormInfo() {
     const phoneRef = useRef();
     const dobRef = useRef();
 
-    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE3MzM1NDA2ODAsImV4cCI6MTczMzU3MDY4MH0.uz9_LqUG-ckQClfFuIm0g7LEhpQjP2AffSKbA9pWz1gHMtHwjLzXfd0_K0jhXsi5";
+    const [selectedGender, setSelectedGender] = useState("");
+
+    const handleGenderChange = (event) => {
+        setSelectedGender(event.target.value);
+    };
 
     const [error, setError] = useState(null);
 
     const handleClick=async (e) => {
         e.preventDefault();
         
+        const token = localStorage.getItem("token");
+        console.log(token);
+
         const userName = nameRef.current.value;
         const userAddress = addressRef.current.value;
-        const userEmail = emailRef.current.value;
         const userPhone = phoneRef.current.value;
         const userDoB = dobRef.current.value;
 
@@ -30,10 +36,8 @@ function UserFormInfo() {
             phoneNumber:userPhone, 
             address: userAddress,
             name: userName,
-            email:userEmail,
-            gender:"Nam"
+            gender:selectedGender,
         };
-        console.log(user);
 
         try {
             const res = await axios.patch(
@@ -45,8 +49,8 @@ function UserFormInfo() {
                     },
                     //withCredentials: true,
                 }
-                
-            );
+            )
+            console.log(res.data);
         } catch(err) {
             setError(err.message || "Something went wrong");
         }
@@ -93,7 +97,7 @@ function UserFormInfo() {
                         <label htmlFor="UserPhone" className="userInfo-form-label">
                             Số điện thoại
                         </label>
-                        <input type="number" className="userInfo-form-input" 
+                        <input type="text" className="userInfo-form-input" 
                         id='userPhone'
                         placeholder='Nhập số điện thoại'
                         ref={phoneRef}/>
@@ -106,6 +110,31 @@ function UserFormInfo() {
                         id='userDoB'
                         ref={dobRef}/>
                     </li>
+                    <li className="userInfo-form-li">
+                        <label className="userInfo-form-label">Giới tính</label>
+                        <div className="userInfo-form-input-group">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="M"
+                                    className="userInfo-form-input-radio"
+                                    onClick={handleGenderChange}
+                                />
+                                Nam
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="F"
+                                    className="userInfo-form-input-radio"
+                                    onClick={handleGenderChange}
+                                />
+                                Nữ
+                            </label>
+                        </div>
+                    </li>
                 </ul>
                 <button className="userInfo-form-button"
                 onClick={handleClick}>
@@ -116,13 +145,78 @@ function UserFormInfo() {
     );
 }
 
+function UserPersonalInfo() {
+    const [userInfo, setuserInfo] = useState("");
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const fetchUserInfo = async(e) => {
+            const token = localStorage.getItem("token");
+
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/customer/info",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                        //withCredentials: true,
+                    },
+                )
+                setuserInfo(res.data);
+                console.log(res.data);
+            } catch(err) {
+                setError(err.message || "Something went wrong!")
+            }
+        }
+
+        fetchUserInfo();
+    }, [])
+
+    return (
+        <>
+            <div className="PersonalInfo">
+                <h6 className="Pinfo-title">
+                    Thông tin cá nhân
+                </h6>
+                <ul className="userInfo-form-ul">
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Họ tên</p>
+                        <p className="Pinfo">{userInfo.name ? userInfo.name : "Chưa cập nhật"}</p>
+                    </li>
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Địa chỉ</p>
+                        <p className="Pinfo">{userInfo.address ? userInfo.address : "Chưa cập nhật"}</p>
+                    </li>
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Email</p>
+                        <p className="Pinfo">{userInfo.email ? userInfo.email : "Chưa cập nhật"}</p>
+                    </li>
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Số điện thoại</p>
+                        <p className="Pinfo">{userInfo.phoneNumber ? userInfo.phoneNumber : "Chưa cập nhật"}</p>
+                    </li>
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Ngày sinh</p>
+                        <p className="Pinfo">{userInfo.dob ? userInfo.dob : "Chưa cập nhật"}</p>
+                    </li>
+                    <li className="userInfo-form-li">
+                        <p className="Pinfo Pinfo1">Giới tính</p>
+                        <p className="Pinfo">{userInfo.gender ? userInfo.gender : "Chưa cập nhật"}</p>
+                    </li>
+                </ul>
+            </div>
+        </>
+    );
+}
 
 function UserInfo() {
     return (
         <div className='userInfoScreen'>
             <div className="userInfoScreen-mid">
                 <UserFormInfo/>
+                <UserPersonalInfo/>
             </div>
         </div>
     );

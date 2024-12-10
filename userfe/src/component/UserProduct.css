@@ -150,14 +150,14 @@
   .most-popular-table-row .most-popular-table-name-product {
     font-size: 18px;
     line-height: 40px;
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
   
   .most-popular-table-row .most-popular-table-price {
     font-size: 18px;
     line-height: 30px;
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
   
