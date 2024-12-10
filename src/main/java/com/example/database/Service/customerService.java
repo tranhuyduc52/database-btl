@@ -3,7 +3,10 @@ package com.example.database.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import com.example.database.Customer.customerDTO;
@@ -25,6 +28,9 @@ public class customerService {
     private orderMapper orderMapper;
     @Autowired
     private customerMapper customerMapper;
+    @Autowired
+    DataSource dataSource;
+    private JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
     public customerUpdateDto getInfo(String phoneNumber){
         return customerMapper.tCustomerUpdateDto( repo.findByPhoneNumber(phoneNumber));
     }
@@ -42,6 +48,7 @@ public class customerService {
     }
     public void delCustomerByUsername(String phoneNumber){
         repo.deleteByPhoneNumber(phoneNumber);
+        manager.deleteUser(phoneNumber);
     }
     public void updateCustomerInfo(customerUpdateDto dto){
         repo.updateCustomerInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());
