@@ -30,6 +30,7 @@ import com.example.database.Customer.customerDTO;
 import com.example.database.Gift.giftResponseDto;
 import com.example.database.Product.productResponseDto;
 import com.example.database.Relationship.exchangeResponseDto;
+import com.example.database.Relationship.reviewResponseDto;
 import com.example.database.Service.customerService;
 import com.example.database.Service.giftService;
 import com.example.database.Service.productService;
@@ -38,6 +39,8 @@ import com.example.database.jwt.LoginRequest;
 import com.example.database.jwt.LoginResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -90,9 +93,9 @@ public class PublicController {
     public String createCustomer(@RequestBody customerDTO dto) 
     {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        if(manager.userExists(dto.username())){return "Username already exists";}
+        if(manager.userExists(String.valueOf(dto.phoneNumber()))){return "Username already exists";}
 
-        UserDetails user = User.withUsername(dto.username())
+        UserDetails user = User.withUsername(String.valueOf(dto.phoneNumber()))
         .password(passwordEncoder.encode(dto.password()))
         .roles("CUSTOMER")
         .build();
@@ -109,6 +112,12 @@ public class PublicController {
     public List<giftResponseDto> getAllGifts() {
         return giftService.findAllGift();
     }
+    @GetMapping("/product/review")
+    public List<reviewResponseDto> getProductReview(@RequestParam int productId) {
+        return productService.getReview(productId);
+        //return new String();
+    }
+    
     
 }
 // @PreAuthorize("hasRole('CUSTOMER')")  //use to specify role access should go with enableMethodSecurity

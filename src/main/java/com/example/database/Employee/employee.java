@@ -1,13 +1,14 @@
 package com.example.database.Employee;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.example.database.Branch.branch;
 import com.example.database.Order._order;
 import com.example.database.Relationship.schedule;
+import com.example.database.myenum.GenderEnum;
+import com.example.database.myenum.PositionEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,17 +28,15 @@ public class employee {
     @Id
     @GeneratedValue
     private int id;
-    private LocalDate dob;
+    private Date dob;
     private int phoneNumber;
     private String address;
-    private String gender;
+    private GenderEnum gender;
     private String name;
-    private String email;
     private Date startDate;
-    private String position;
+    private PositionEnum position;   //create enum: manager, cashier, barista, waiter
     private int unitSalary;
     private int totalSalary;
-    private String username;
     private String password;
     @OneToMany(mappedBy = "employee")
     private List<schedule> schedules = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.example.database.Order;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +27,10 @@ public class _order {
     @Id
     @GeneratedValue
     private int id;
-    private int total_charge;
-    private String payment_method;
-    private LocalDateTime order_time;
-    private boolean state;
+    private float total_charge;
+    private Date order_time;
+
+
     @OneToMany(mappedBy = "_order")
     private List<has> hases = new ArrayList<>();
     @ManyToOne

@@ -1,13 +1,16 @@
 package com.example.database.Employee;
 
-import java.util.Date;
+
+import java.sql.Date;
+
+import com.example.database.myenum.PositionEnum;
 
 public record employeeResponseDto(
     int id,
     String name,
     int phoneNumber,
     Date startDate,
-    String position,
+    PositionEnum position,
     int unitSalary
 ) {
     

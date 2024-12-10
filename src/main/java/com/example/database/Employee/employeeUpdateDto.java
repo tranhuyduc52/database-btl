@@ -1,15 +1,16 @@
 package com.example.database.Employee;
 
-import java.time.LocalDate;
-import java.util.Date;
+
+import java.sql.Date;
+
+import com.example.database.myenum.GenderEnum;
 
 public record employeeUpdateDto(
-    LocalDate dob,
+    Date dob,
     int phoneNumber,
     String address,
-    String gender,
-    String name,
-    String email
-) {
+    GenderEnum gender,
+    String name
+    ) {
     
 }

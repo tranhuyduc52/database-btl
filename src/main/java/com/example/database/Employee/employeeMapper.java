@@ -8,7 +8,7 @@ public class employeeMapper {
         var employee = new employee();
         employee.setUnitSalary(dto.unitSalary());
         employee.setPosition(dto.position());
-        employee.setUsername(dto.username());
+        employee.setPhoneNumber(dto.phoneNumber());
         employee.setPassword(dto.password());
         return employee;
     }
@@ -16,6 +16,6 @@ public class employeeMapper {
         return new employeeResponseDto(employee.getId(),employee.getName(),employee.getPhoneNumber(),employee.getStartDate(),employee.getPosition(),employee.getUnitSalary());
     }
     public employeeUpdateDto tEmployeeUpdateDto(employee employee){
-        return new employeeUpdateDto(employee.getDob(),employee.getPhoneNumber(),employee.getAddress(),employee.getGender(),employee.getName(),employee.getEmail());
+        return new employeeUpdateDto(employee.getDob(),employee.getPhoneNumber(),employee.getAddress(),employee.getGender(),employee.getName());
     }
 }

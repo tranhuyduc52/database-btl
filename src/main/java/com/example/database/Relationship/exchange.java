@@ -1,6 +1,7 @@
 package com.example.database.Relationship;
 
-import java.time.LocalDateTime;
+
+import java.sql.Date;
 
 import com.example.database.Customer.customer;
 import com.example.database.Embedded.exchange_embed;
@@ -31,5 +32,5 @@ public class exchange {
     @JoinColumn(name = "gift_ID")
     private gift gift;
     private int quantity;
-    private LocalDateTime date;
+    private Date date;
 }

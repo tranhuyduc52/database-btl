@@ -25,28 +25,28 @@ public class customerService {
     private orderMapper orderMapper;
     @Autowired
     private customerMapper customerMapper;
-    public customerUpdateDto getInfo(String username){
-        return customerMapper.tCustomerUpdateDto( repo.findByUsername(username));
+    public customerUpdateDto getInfo(int phoneNumber){
+        return customerMapper.tCustomerUpdateDto( repo.findByPhoneNumber(phoneNumber));
     }
-    public List<exchangeResponseDto> getExchange(String username){
-        return repo.findByUsername(username)
+    public List<exchangeResponseDto> getExchange(int phoneNumber){
+        return repo.findByPhoneNumber(phoneNumber)
         .getExchanges().stream().map(exchangeMapper::tExchangeResponseDto)
         .collect(Collectors.toList());
     }
-    public List<orderResponseDto> getOrder(String username){
-        return repo.findByUsername(username).get_orders()
+    public List<orderResponseDto> getOrder(int phoneNumber){
+        return repo.findByPhoneNumber(phoneNumber).get_orders()
         .stream().map(orderMapper::tOrderResponseDto).collect(Collectors.toList());
     }
     public void createCustomer(customerDTO dto){
         repo.save(customerMapper.toCustomer(dto));
     }
-    public void delCustomerByUsername(String username){
-        repo.deleteByUsername(username);
+    public void delCustomerByUsername(int phoneNumber){
+        repo.deleteByPhoneNumber(phoneNumber);
     }
-    public void updateCustomerInfo(customerUpdateDto dto,String username){
-        repo.updateCustomerInfo(dto.dob(),dto.phoneNumber(),dto.address(),dto.gender(),dto.name(),dto.email(),username);
+    public void updateCustomerInfo(customerUpdateDto dto){
+        repo.updateCustomerInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());
     }
-    public int getPoint(String username){
-        return repo.findByUsername(username).getPoint();
+    public int getPoint(int phoneNumber){
+        return repo.findByPhoneNumber(phoneNumber).getPoint();
     }
 }

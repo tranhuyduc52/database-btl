@@ -1,7 +1,7 @@
 package com.example.database.Relationship;
 
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import com.example.database.Embedded.schedule_embed;
 import com.example.database.Employee.employee;
@@ -34,5 +34,5 @@ public class schedule {
     @JoinColumn(name = "shift_ID")
     private shift shift;
 
-    private LocalDateTime date;
+    private Date date;
 }

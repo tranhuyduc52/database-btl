@@ -1,6 +1,7 @@
 package com.example.database.Controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.database.Employee.employeeUpdateDto;
 import com.example.database.Order.orderDto;
+import com.example.database.Relationship.exchangeResponseDto;
 import com.example.database.Service.employeeService;
+import com.example.database.Service.exchangeService;
 import com.example.database.Service.orderService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,23 +34,27 @@ public class employeeController {
     employeeService employeeService;
     @Autowired
     orderService orderService;
-
+    @Autowired
+    exchangeService exchangeService;
 
     @PostMapping("/order/create")
     public void createOrder(@RequestBody orderDto dto,Principal principal) {
         //TODO: process POST request
-        orderService.createOrder(dto,principal.getName());
+        orderService.createOrder(dto,Integer.parseInt(principal.getName()));
     }
     @PatchMapping("/update/info")
-    public void updateInfo(@RequestBody employeeUpdateDto dto,Principal principal) {
-        employeeService.updateEmployee(dto,principal.getName());
+    public void updateInfo(@RequestBody employeeUpdateDto dto) {
+        employeeService.updateEmployee(dto);
     }
     
     @GetMapping("/get/info")
     public employeeUpdateDto getEmployeeInfo(Principal principal) {
-        return employeeService.getEmployeeInfo(principal.getName());
+        return employeeService.getEmployeeInfo(Integer.parseInt(principal.getName()));
     }
-    
+    @GetMapping("view/exchange")
+    public List<exchangeResponseDto> getAllExchange() {
+        return exchangeService.getAllExchange();
+    }
     
     
 }

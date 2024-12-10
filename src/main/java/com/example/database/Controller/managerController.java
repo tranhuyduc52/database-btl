@@ -24,9 +24,11 @@ import com.example.database.Gift.giftResponseDto;
 import com.example.database.Order.orderResponseDto;
 import com.example.database.Product.productDto;
 import com.example.database.Product.productUpdateDto;
+import com.example.database.Relationship.exchangeResponseDto;
 import com.example.database.Relationship.scheduleDto;
 import com.example.database.Relationship.scheduleResponseDto;
 import com.example.database.Service.employeeService;
+import com.example.database.Service.exchangeService;
 import com.example.database.Service.giftService;
 import com.example.database.Service.orderService;
 import com.example.database.Service.productService;
@@ -62,14 +64,16 @@ public class managerController {
     scheduleService scheduleService;
     @Autowired
     orderService orderService;
+    @Autowired
+    exchangeService exchangeService;
 
     @PostMapping("create/employee")
     public String createEmployee(@RequestBody employeeDto dto) 
     {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        if(manager.userExists(dto.username())){return "Username already exists";}
+        if(manager.userExists(String.valueOf(dto.phoneNumber()))){return "Username already exists";}
 
-        UserDetails user = User.withUsername(dto.username())
+        UserDetails user = User.withUsername(String.valueOf(dto.phoneNumber()))
         .password(passwordEncoder.encode(dto.password()))
         .roles("EMPLOYEE")
         .build();
@@ -105,40 +109,45 @@ public class managerController {
     @PatchMapping("/update/employee/salary")
     public void putMethodName(@RequestBody employeeCalSalaryDto dto) {
         //TODO: process PUT request
-        employeeService.calculateSalary(dto.id(),dto.localDateTime().getMonthValue(),dto.localDateTime().getYear());
+        employeeService.calculateSalary(dto);
     }
-    @PatchMapping("update/employee/job")
+    @PatchMapping("/update/employee/job")
     public void updateEmployeeJob(@RequestBody employeeUpdateJobDto dto) {
         //TODO: process PUT request
-        employeeService.updateEmployeeJob(dto.position(),dto.unitSalary(),dto.id());
+        employeeService.updateEmployeeJob(dto);
     }
-    @DeleteMapping("delete/employee")
+    @DeleteMapping("/delete/employee")
     public void delEmployee(@RequestParam int id){
         employeeService.delEmployee(id);
     }
-    @GetMapping("view/orders")
+    @GetMapping("/view/orders")
     public List<orderResponseDto> getOrders() {
         return orderService.getAllOrder();
     }
     
-    @PatchMapping("delete/gift")
+    @PatchMapping("/delete/gift")
     public void delGift(int id) {
         //TODO: process PUT request
         giftService.hideGift(id);
     }
-    @PatchMapping("delete/product")
+    @PatchMapping("/delete/product")
     public void delProduct(int id) {
         //TODO: process PUT request
         productService.hideProduct(id);;
     }
-    @PatchMapping("update/product")
+    @PatchMapping("/update/product")
     public void updateProduct(@RequestBody productUpdateDto dto) {
         //TODO: process PUT request
         productService.updateProduct(dto);
     }
-    @PatchMapping("update/gift")
+    @PatchMapping("/update/gift")
     public void updateGift(@RequestBody giftResponseDto dto) {
         //TODO: process PUT request
         giftService.updateGift(dto);
     }
+    @GetMapping("view/exchange")
+    public List<exchangeResponseDto> getAllExchange() {
+        return exchangeService.getAllExchange();
+    }
+    
 }

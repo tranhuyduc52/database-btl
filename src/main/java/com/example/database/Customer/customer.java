@@ -1,13 +1,13 @@
 package com.example.database.Customer;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.database.Order._order;
 import com.example.database.Relationship.exchange;
 import com.example.database.Relationship.review;
+import com.example.database.myenum.GenderEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,16 +25,14 @@ public class customer {
     @Id
     @GeneratedValue
     private int id;
-    private LocalDate dob;
-    private int phoneNumber;
+    private Date dob;
+    private int phoneNumber; //function as username
     private String address;
-    private String gender;
+    private GenderEnum gender;
     private String name;
-    private String email;
     private int point;
     private String password;
-    private String username;
-    private LocalDateTime customerSince;
+    private Date customerSince;
     @OneToMany(mappedBy = "customer")
     private List<review> reviews= new ArrayList<>();
     @OneToMany(mappedBy = "customer")

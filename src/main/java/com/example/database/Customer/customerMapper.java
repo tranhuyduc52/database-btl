@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 public class customerMapper {
     public customer toCustomer(customerDTO dto){
         var customer = new customer();
-        customer.setUsername(dto.username());
+        customer.setPhoneNumber(dto.phoneNumber());
         customer.setPassword(dto.password());
         return customer;
     }
     public customerResponseDTO toCustomerResponseDTO(customer customer){
-        var customerResponseDTO=new customerResponseDTO(customer.getId(),customer.getName(), customer.getAddress(), customer.getPhoneNumber(), customer.getEmail());
+        var customerResponseDTO=new customerResponseDTO(customer.getId(),customer.getName(), customer.getAddress(), customer.getPhoneNumber());
         return customerResponseDTO;
     }
     public customerUpdateDto tCustomerUpdateDto(customer customer){
-        return new customerUpdateDto(customer.getDob(),customer.getPhoneNumber(),customer.getAddress(),customer.getGender(),customer.getName(),customer.getEmail());
+        return new customerUpdateDto(customer.getDob(),customer.getPhoneNumber(),customer.getAddress(),customer.getGender(),customer.getName());
     }
 }

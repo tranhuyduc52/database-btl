@@ -11,7 +11,7 @@ public class giftMapper {
         var gift = new gift();
         gift.setName(dto.name());
         gift.setPoint(dto.point());
-        gift.setState(true);
+        gift.setAvailable(true);
         return gift;
     }
 }

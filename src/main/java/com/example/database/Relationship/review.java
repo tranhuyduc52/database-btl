@@ -1,7 +1,7 @@
 package com.example.database.Relationship;
 
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import com.example.database.Customer.customer;
 import com.example.database.Embedded.review_embed;
@@ -31,7 +31,7 @@ public class review {
     @MapsId("productId")
     @JoinColumn(name = "product_ID")
     private product product;
-    private float score;
-    private LocalDateTime date;
+    private int score;
+    private Date date;
     private String comment;
 }

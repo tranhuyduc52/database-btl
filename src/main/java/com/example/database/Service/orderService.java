@@ -18,8 +18,8 @@ public class orderService {
     @Autowired
     private orderMapper orderMapper;
 
-    public void createOrder(orderDto dto,String employee_username){
-        repo.save(orderMapper.t_order(dto,employee_username));
+    public void createOrder(orderDto dto,int phoneNumber){
+        repo.save(orderMapper.t_order(dto,phoneNumber));
     }
     public List<orderResponseDto> getAllOrder(){
         return repo.findByState(true).stream()

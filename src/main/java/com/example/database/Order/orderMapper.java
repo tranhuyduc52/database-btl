@@ -30,13 +30,12 @@ public class orderMapper {
     private productMapper productMapper;
     @Autowired
     private employeeMapper employeeMapper;
-    public _order t_order(orderDto dto,String employee_username){
+    public _order t_order(orderDto dto,int phoneNumber){
         var order= new _order();
-        customerRepo.findByUsername(dto.customer_username()).addOrder(order);
-        employeeRepo.findByUsername(employee_username).addOrder(order);
-        order.setState(true);
+        customerRepo.findByPhoneNumber(dto.customerPhoneNumber()).addOrder(order);
+        employeeRepo.findByPhoneNumber(phoneNumber).addOrder(order);
         order.setOrder_time(dto.order_time());
-        order.setPayment_method(dto.payment_method());
+        // order.setPayment_method(dto.payment_method());
         var producList = dto.producList();
         var total_charge = 0;
         for(var i : producList){
@@ -57,6 +56,6 @@ public class orderMapper {
             var productInOrderResponseDto = new productInOrderResponseDto(productMapper.toProductResponseDto(i.getProduct()),i.getQuantity());
             productInOrderResponseDtoList.add(productInOrderResponseDto);
         }
-        return new orderResponseDto(order.getId(),order.getTotal_charge(),order.getPayment_method(),order.getOrder_time(),order.getEmployee().getName(),order.getCustomer().getName(),productInOrderResponseDtoList);
+        return new orderResponseDto(order.getId(),order.getTotal_charge(),order.getOrder_time(),order.getEmployee().getName(),order.getCustomer().getName(),productInOrderResponseDtoList);
     }
 }

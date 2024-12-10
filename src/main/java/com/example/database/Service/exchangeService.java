@@ -17,8 +17,8 @@ public class exchangeService {
     private exchangeRepo repo;
     @Autowired
     private exchangeMapper exchangeMapper;
-    public void createExchange(exchangeDto exchangeDto,String username){
-        repo.save(exchangeMapper.tExchange(exchangeDto, username));
+    public void createExchange(exchangeDto exchangeDto,int phoneNumber){
+        repo.save(exchangeMapper.tExchange(exchangeDto, phoneNumber));
     }
     public List<exchangeResponseDto> getAllExchange(){
         return repo.findAll().stream()

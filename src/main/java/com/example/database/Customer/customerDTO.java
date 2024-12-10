@@ -1,8 +1,8 @@
 package com.example.database.Customer;
 
 public record customerDTO(
-    String username,
+    int phoneNumber,
     String password
 ) {
-    
+
 }

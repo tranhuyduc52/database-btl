@@ -8,7 +8,7 @@ public class productMapper {
         var product=new product();
         product.setName(dto.name());
         product.setUnit_price(dto.unit_price());
-        product.setState(true);
+        product.setAvailable(true);
         product.setDiscount(1);
         return product;
     }

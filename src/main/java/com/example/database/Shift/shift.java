@@ -23,6 +23,7 @@ public class shift{
     private int id;
     private String startTime;
     private String endTime;
+    private int hour;
     @OneToMany(mappedBy = "shift")
     private List<schedule> schedules = new ArrayList<>();
     public void addSchedule(schedule schedule){

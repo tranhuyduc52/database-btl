@@ -14,9 +14,9 @@ import jakarta.transaction.TransactionScoped;
 public interface giftRepo extends JpaRepository<gift,Integer>{
     @Modifying
     @TransactionScoped
-    @Query("update gift a set a.state=false where a.id=:id")
+    @Query("update gift a set a.isAvailable=false where a.id=:id")
     void hideGift(@Param("id") int id);
-    List<gift> findByState(boolean state);
+    List<gift> findByAvailable(boolean available);
     @Modifying
     @TransactionScoped
     @Query("update gift a set a.name=:name,a.point=:point where a.id=:id")

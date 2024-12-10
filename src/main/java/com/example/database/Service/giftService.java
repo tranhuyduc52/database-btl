@@ -27,7 +27,7 @@ public class giftService {
         repo.deleteById(id);
     }
     public List<giftResponseDto> findAllGift(){
-        return repo.findByState(true).stream()
+        return repo.findByAvailable(true).stream()
         .map(giftMapper::tGiftResponseDto)
         .collect(Collectors.toList());
     }
