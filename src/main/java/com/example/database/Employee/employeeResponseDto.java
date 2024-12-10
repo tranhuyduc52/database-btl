@@ -8,7 +8,7 @@ import com.example.database.myenum.PositionEnum;
 public record employeeResponseDto(
     int id,
     String name,
-    int phoneNumber,
+    String phoneNumber,
     Date startDate,
     PositionEnum position,
     int unitSalary

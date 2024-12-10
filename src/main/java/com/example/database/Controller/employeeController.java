@@ -40,7 +40,7 @@ public class employeeController {
     @PostMapping("/order/create")
     public void createOrder(@RequestBody orderDto dto,Principal principal) {
         //TODO: process POST request
-        orderService.createOrder(dto,Integer.parseInt(principal.getName()));
+        orderService.createOrder(dto,principal.getName());
     }
     @PatchMapping("/update/info")
     public void updateInfo(@RequestBody employeeUpdateDto dto) {
@@ -49,7 +49,7 @@ public class employeeController {
     
     @GetMapping("/get/info")
     public employeeUpdateDto getEmployeeInfo(Principal principal) {
-        return employeeService.getEmployeeInfo(Integer.parseInt(principal.getName()));
+        return employeeService.getEmployeeInfo(principal.getName());
     }
     @GetMapping("view/exchange")
     public List<exchangeResponseDto> getAllExchange() {

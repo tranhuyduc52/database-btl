@@ -35,7 +35,7 @@ public class employeeService {
     public void updateEmployee(employeeUpdateDto dto){
         repo.updateEmployeeInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());
     }
-    public employeeUpdateDto getEmployeeInfo(int phoneNumber){
+    public employeeUpdateDto getEmployeeInfo(String phoneNumber){
         return employeeMapper.tEmployeeUpdateDto(repo.findByPhoneNumber(phoneNumber));
     }
     public void updateEmployeeJob(employeeUpdateJobDto dto){

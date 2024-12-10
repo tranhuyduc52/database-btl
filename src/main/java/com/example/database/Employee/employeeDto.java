@@ -5,7 +5,7 @@ import com.example.database.myenum.PositionEnum;
 public record employeeDto(
     int unitSalary,
     PositionEnum position,
-    int phoneNumber,
+    String phoneNumber,
     String password
 ) {
     

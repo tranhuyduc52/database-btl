@@ -17,9 +17,9 @@ import java.util.List;
 
 
 public interface customerRepo extends JpaRepository<customer,Integer>{
-    public customer findByPhoneNumber(int phoneNumber);
+    public customer findByPhoneNumber(String phoneNumber);
     @Transactional
-    public void deleteByPhoneNumber(int phoneNumber);
+    public void deleteByPhoneNumber(String phoneNumber);
     @Transactional
     @Modifying
     @Query("update customer a set a.dob=:dob,a.address=:address,a.gender=:gender,a.name=:name where a.phoneNumber=:phoneNumber")
@@ -27,6 +27,6 @@ public interface customerRepo extends JpaRepository<customer,Integer>{
     @Param("address") String address,
     @Param("gender") GenderEnum gender,
     @Param("name") String name,
-    @Param("phoneNumber") int phoneNumber
+    @Param("phoneNumber") String phoneNumber
                                    );
 }

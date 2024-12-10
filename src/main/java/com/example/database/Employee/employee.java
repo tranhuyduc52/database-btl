@@ -29,7 +29,7 @@ public class employee {
     @GeneratedValue
     private int id;
     private Date dob;
-    private int phoneNumber;
+    private String phoneNumber;
     private String address;
     private GenderEnum gender;
     private String name;

@@ -58,7 +58,7 @@ public class customerController {
     @DeleteMapping("/delete")
     public void delCustomer(Principal principal){
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        customerService.delCustomerByUsername(Integer.parseInt(principal.getName()));
+        customerService.delCustomerByUsername(principal.getName());
         manager.deleteUser(principal.getName());
     }
     @PatchMapping("/updateInfo")
@@ -67,28 +67,28 @@ public class customerController {
     }
     @GetMapping("/order/view")
     public List<orderResponseDto> getMethodName(Principal principal) {
-        return customerService.getOrder(Integer.parseInt(principal.getName()));
+        return customerService.getOrder(principal.getName());
     }
     @PostMapping("/review/create")
     public void postWriteReview(@RequestBody reviewDto dto,Principal principal) {
-        reviewService.createReview(dto,Integer.parseInt(principal.getName()));
+        reviewService.createReview(dto,principal.getName());
         
     }
     @PostMapping("/gift/exchange")
     public void exchangeGift(@RequestBody exchangeDto dto,Principal principal) {
-        exchangeService.createExchange(dto,Integer.parseInt(principal.getName()));
+        exchangeService.createExchange(dto,principal.getName());
     }
     @GetMapping("/point")
     public int getPoint(Principal principal) {
-        return customerService.getPoint(Integer.parseInt(principal.getName()));
+        return customerService.getPoint(principal.getName());
     }
     @GetMapping("/info")
     public customerUpdateDto getInfo(Principal principal) {
-        return customerService.getInfo(Integer.parseInt(principal.getName()));
+        return customerService.getInfo(principal.getName());
     }
     @GetMapping("/gift/exchange/history")
     public List<exchangeResponseDto> getExchangeHistory(Principal principal) {
-        return customerService.getExchange(Integer.parseInt(principal.getName()));
+        return customerService.getExchange(principal.getName());
     }
     
 }

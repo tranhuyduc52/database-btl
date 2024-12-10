@@ -4,6 +4,6 @@ public record customerResponseDTO(
     int id,
     String name,
     String address,
-    int phoneNumber) {
+    String phoneNumber) {
     
 }
