@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 
 
+
 function UserFormInfo() {
     const nameRef = useRef();
     const addressRef = useRef();
@@ -168,7 +169,6 @@ function UserPersonalInfo() {
                     },
                 )
                 setuserInfo(res.data);
-                console.log(res.data);
             } catch(err) {
                 setError(err.message || "Something went wrong!")
             }
@@ -193,10 +193,6 @@ function UserPersonalInfo() {
                         <p className="Pinfo">{userInfo.address ? userInfo.address : "Chưa cập nhật"}</p>
                     </li>
                     <li className="userInfo-form-li">
-                        <p className="Pinfo Pinfo1">Email</p>
-                        <p className="Pinfo">{userInfo.email ? userInfo.email : "Chưa cập nhật"}</p>
-                    </li>
-                    <li className="userInfo-form-li">
                         <p className="Pinfo Pinfo1">Số điện thoại</p>
                         <p className="Pinfo">{userInfo.phoneNumber ? userInfo.phoneNumber : "Chưa cập nhật"}</p>
                     </li>
@@ -206,7 +202,11 @@ function UserPersonalInfo() {
                     </li>
                     <li className="userInfo-form-li">
                         <p className="Pinfo Pinfo1">Giới tính</p>
-                        <p className="Pinfo">{userInfo.gender ? userInfo.gender : "Chưa cập nhật"}</p>
+                        <p className="Pinfo">{
+                            userInfo.gender === 'M' ? "Nam" : (
+                                userInfo.gender === 'F' ? "Nữ" : "Chưa cập nhật"
+                            )
+                        }</p>
                     </li>
                 </ul>
             </div>

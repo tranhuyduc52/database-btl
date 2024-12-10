@@ -40,7 +40,7 @@ public class productService {
         var reviewList = product.getReviews();
         List<reviewResponseDto> res = new ArrayList<>();
         for(var i: reviewList){
-            var reviewResponseDto = new reviewResponseDto(i.getId(),i.getDate(), i.getScore(),i.getComment(),i.getCustomer().getName(),"");
+            var reviewResponseDto = new reviewResponseDto(i.getId(),i.getDate(), i.getScore(),i.getComment(),i.getCustomer().getName(),product.getName());
             res.add(reviewResponseDto);
         }
         return res;

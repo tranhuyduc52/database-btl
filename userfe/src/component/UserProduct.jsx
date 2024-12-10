@@ -1,11 +1,11 @@
 import './UserProduct.css';
 import { useState } from 'react';
-import React, { useEffect }  from 'react';
+import React, { useEffect, useRef }  from 'react';
 import axios from 'axios';
+import UserFeedBack from './UserFeedBack';
 
 
-
-function UserDetailProduct({ toggle, toggleVisibility}) {
+function UserDetailProduct({ toggle, toggleVisibility, response, toggleFeedBack}) {
     return (
         <>
             <div className="detail-product"
@@ -27,8 +27,13 @@ function UserDetailProduct({ toggle, toggleVisibility}) {
                             <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} 
                             alt="" className="detail-product-middle-left-img"/>
                             <p className="detail-product-middle-left-name">
-                                Phindi Cassia
+                                {response[0] ? response[0].productName
+                                : ""}
                             </p>
+                            <button className="detail-product-middle-left-button"
+                            onClick={toggleFeedBack}>
+                                Thêm đánh giá
+                            </button>
                         </div>
                     </div>
                     <div className="detail-product-middle-right">
@@ -42,69 +47,33 @@ function UserDetailProduct({ toggle, toggleVisibility}) {
                                 </div>
                             </div>
                             <ul className="detail-product-middle-right-ul">
-                                <li className="detail-product-middle-right-li">
-                                    <div className="detail-product-middle-right-user">
-                                        <p className="detail-product-middle-right-name">
-                                            hngvnphmth855
-                                        </p>
-                                        <div className="detail-product-middle-right-star">
-                                            <span data-value="5" title="5 sao">&#9733;</span>
-                                            <span data-value="4" title="4 sao">&#9733;</span>
-                                            <span data-value="3" title="3 sao">&#9733;</span>
-                                            <span data-value="2" title="2 sao">&#9733;</span>
-                                            <span data-value="1" title="1 sao">&#9733;</span>
+                                {response.map((item, index) => (
+                                    console.log(item),
+                                    <li key={item}
+                                    className='detail-product-middle-right-li'>
+                                        <div className="detail-product-middle-right-user">
+                                            <p className="detail-product-middle-right-name">
+                                                {item.customerName}
+                                            </p>
+                                            <div className="detail-product-middle-right-star">
+                                                {[1, 2, 3, 4, 5].map((value) => (
+                                                    <span key={value}
+                                                    data-value={value}
+                                                    className={value <= item.score ? "star-active" : "star"}>
+                                                        &#9733;
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <p className="detail-product-middle-right-date">
+                                                {item.date}
+                                            </p>
+                                            <p className="detail-product-middle-right-comment">
+                                                {item.comment}
+                                            </p>
                                         </div>
-                                        <p className="detail-product-middle-right-date">
-                                            2/12/2024 10:25
-                                        </p>
-                                        <p className="detail-product-middle-right-comment">
-                                            Đồ uống dở ẹc
-                                        </p>
-                                    </div>
-                                    <img src={require(`../img/Avatar.png`)} alt="" className="detail-product-middle-right-ava"/>
-                                </li>
-                                <li className="detail-product-middle-right-li">
-                                    <div className="detail-product-middle-right-user">
-                                        <p className="detail-product-middle-right-name">
-                                            hngvnphmth855
-                                        </p>
-                                        <div className="detail-product-middle-right-star">
-                                            <span data-value="5" title="5 sao">&#9733;</span>
-                                            <span data-value="4" title="4 sao">&#9733;</span>
-                                            <span data-value="3" title="3 sao">&#9733;</span>
-                                            <span data-value="2" title="2 sao">&#9733;</span>
-                                            <span data-value="1" title="1 sao">&#9733;</span>
-                                        </div>
-                                        <p className="detail-product-middle-right-date">
-                                            2/12/2024 10:25
-                                        </p>
-                                        <p className="detail-product-middle-right-comment">
-                                            Đồ uống dở ẹc
-                                        </p>
-                                    </div>
-                                    <img src={require(`../img/Avatar.png`)} alt="" className="detail-product-middle-right-ava"/>
-                                </li>
-                                <li className="detail-product-middle-right-li">
-                                    <div className="detail-product-middle-right-user">
-                                        <p className="detail-product-middle-right-name">
-                                            hngvnphmth855
-                                        </p>
-                                        <div className="detail-product-middle-right-star">
-                                            <span data-value="5" title="5 sao">&#9733;</span>
-                                            <span data-value="4" title="4 sao">&#9733;</span>
-                                            <span data-value="3" title="3 sao">&#9733;</span>
-                                            <span data-value="2" title="2 sao">&#9733;</span>
-                                            <span data-value="1" title="1 sao">&#9733;</span>
-                                        </div>
-                                        <p className="detail-product-middle-right-date">
-                                            2/12/2024 10:25
-                                        </p>
-                                        <p className="detail-product-middle-right-comment">
-                                            Đồ uống dở ẹc
-                                        </p>
-                                    </div>
-                                    <img src={require(`../img/Avatar.png`)} alt="" className="detail-product-middle-right-ava"/>
-                                </li>
+                                        <img src={require(`../img/Avatar.png`)} alt="" className="detail-product-middle-right-ava"/>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
@@ -119,6 +88,7 @@ function UserProduct() {
 
     const toggleDetail = () => {
         settoggle(!toggle);
+        setShowFeedBack(false);
     }
 
     const [errror, seterror] = useState("");
@@ -139,6 +109,13 @@ function UserProduct() {
         return chunks;
     }
 
+    const [token, setToken] = useState("");
+
+    useEffect(() => {
+        const Token = localStorage.getItem("token");
+        setToken(Token);
+    })
+
     useEffect(() => {
         const FetchProduct = async (e) => {
             try {
@@ -154,7 +131,6 @@ function UserProduct() {
                 )
 
                 setproduct(res.data);
-                // console.log(res.data);
             }
             catch(err) {
                 seterror(err.message || "Something went wrong!")
@@ -167,6 +143,47 @@ function UserProduct() {
     const productChunks = chunkArray(product, 4);
     const LbestChoice = Chunk(product, 0);
     const RbestChoice = Chunk(product, 2);
+
+    const [response, setResponse] = useState([]);
+
+    const fetchReview = async(productID) => {
+        try {
+            const item = await axios.get(
+                `http://localhost:8080/public/product/review`,
+                {
+                    params: {productId: productID},
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+            if (!item.data || (Array.isArray(item.data) && item.data.length === 0)) {
+                setResponse([]);
+                return;
+            }
+            setResponse(item.data);
+        }
+        catch(err) {
+            seterror(err.message || "Something went worng!");
+        }
+    }
+
+    const [proID, setProID] = useState("");
+
+    const proIdRef = useRef("");
+
+    const handleProductClick = async(product, productId) => {
+        toggleDetail(product);
+        fetchReview(productId);
+        proIdRef.current = productId;
+    }
+
+    const [showFeedBack, setShowFeedBack] = useState(false);
+
+    const toggleFeedBack = () => {
+        setShowFeedBack(true);
+    }
+
     return (
         <>
             <div className="product">
@@ -180,7 +197,6 @@ function UserProduct() {
                                 Từ hạt cà phê nguyên chất đến các loại cà phê pha sẵn, mỗi sản phẩm đều là minh chứng cho chất lượng, phong cách, và sự quyến rũ vượt thời gian của cà phê.
                             </p>
                             {LbestChoice.map((chunk, indexD) => (
-                                console.log(chunk),
                                 <div className='product-best-choice-2img'
                                 key={indexD}>
                                     {chunk.map((item, index) => (
@@ -189,7 +205,7 @@ function UserProduct() {
                                             <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} alt="" />
                                             <div className="product-best-choice-image-intro">
                                                 <h6>{item.name}</h6>
-                                                <p>{item.unit_price}</p>
+                                                <p>{item.unit_price} đ</p>
                                             </div>
                                         </div>
                                     ))}
@@ -207,7 +223,7 @@ function UserProduct() {
                                             alt=""/>
                                             <div className="product-best-choice-image-intro">
                                                 <h6>{item.name}</h6>
-                                                <p>{item.unit_price}</p>
+                                                <p>{item.unit_price} đ</p>
                                             </div>
                                         </div>
                                     ))}
@@ -232,9 +248,9 @@ function UserProduct() {
                                             <td key={index} className='most-popular-table-cl1'>
                                                 <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} 
                                                 alt="" 
-                                                onClick={() => toggleDetail(product)}/>
+                                                onClick={() => handleProductClick(product, product.id)}/>
                                                 <p className="most-popular-table-name-product"
-                                                onClick={() => toggleDetail(product)}>
+                                                onClick={() => handleProductClick(product, product.id)}>
                                                     {product.name}
                                                 </p>
                                                 <p className="most-popular-table-price">
@@ -255,7 +271,12 @@ function UserProduct() {
                 </div>
             </div>
 
-            <UserDetailProduct toggle={toggle} toggleVisibility={toggleDetail}/>
+            {showFeedBack 
+            ? <UserFeedBack toggleVisibility={toggleDetail} response={response} proID={proIdRef.current}/>
+            : <UserDetailProduct toggle={toggle} toggleVisibility={toggleDetail} response={response}
+                toggleFeedBack={toggleFeedBack}/>}
+            
+            
         </>
     );
 }
