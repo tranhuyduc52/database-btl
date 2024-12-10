@@ -23,6 +23,6 @@ public interface productRepo extends JpaRepository<product,Integer>{
     @Query("update product a set a.name=:name,a.unit_price=:unit_price,a.discount=:discount where a.id=:id")
     void updateProduct(@Param("id") int id,
     @Param("name") String name,
-    @Param("unit_price") int unit_price,
+    @Param("unit_price") float unit_price,
     @Param("discount") int discount);
 }

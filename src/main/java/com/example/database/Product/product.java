@@ -24,14 +24,17 @@ public class product {
     @GeneratedValue
     private int id;
     private String name;
-    private boolean state;
+    private boolean isAvailable;
     private float rating=0;
     private String description;
-    private int unit_price;
+    private float unit_price;
     private int discount;
     @Transient
     private int numOfRating = 0; //this attribute doesn't exist in the database
     private String type;
+
+
+    
     @OneToMany(mappedBy = "product")
     private List<review> reviews= new ArrayList<>();
     @OneToMany(mappedBy = "product")

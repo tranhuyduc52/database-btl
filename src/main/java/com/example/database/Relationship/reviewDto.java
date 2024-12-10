@@ -1,10 +1,10 @@
 package com.example.database.Relationship;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public record reviewDto(
-    LocalDateTime date,
-    float score,
+    Date date,
+    int score,
     String comment,
     int productId
 ) {

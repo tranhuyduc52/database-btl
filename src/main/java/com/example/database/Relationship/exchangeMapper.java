@@ -16,13 +16,13 @@ public class exchangeMapper {
     public exchangeResponseDto tExchangeResponseDto(exchange exchange){
         return new exchangeResponseDto(exchange.getQuantity(),exchange.getDate(),exchange.getCustomer().getName(),exchange.getGift().getName());
     }
-    public exchange tExchange(exchangeDto dto,String username){
+    public exchange tExchange(exchangeDto dto,int phoneNumber){
         var exchange = new exchange();
         exchange.setDate(dto.date());
         exchange.setQuantity(dto.quantity());
         var gift = giftRepo.findById(dto.giftId()).orElse(null);
         gift.addExchange(exchange);
-        var customer = customerRepo.findByUsername(username);
+        var customer = customerRepo.findByPhoneNumber(phoneNumber);
         customer.addExchange(exchange);
         customer.updatePoint(dto.quantity(),gift.getPoint());
         return exchange;

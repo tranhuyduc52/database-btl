@@ -21,7 +21,7 @@ public class gift {
     @Id
     @GeneratedValue
     private int id;
-    private boolean state;
+    private boolean isAvailable;
     private String name;
     private int point;
     @OneToMany(mappedBy = "gift")

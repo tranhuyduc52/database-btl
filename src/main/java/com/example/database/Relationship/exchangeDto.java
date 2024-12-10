@@ -1,11 +1,11 @@
 package com.example.database.Relationship;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public record exchangeDto(
     int giftId,
     int quantity,
-    LocalDateTime date
+    Date date
 ) {
     
 }
