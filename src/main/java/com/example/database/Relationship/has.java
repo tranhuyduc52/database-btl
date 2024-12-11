@@ -29,5 +29,5 @@ public class has {
     @JoinColumn(name = "product_ID")
     private product product;
     private int quantity;
-    private int price;
+    private float price;
 }
