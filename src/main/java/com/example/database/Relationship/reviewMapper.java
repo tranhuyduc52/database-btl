@@ -14,8 +14,10 @@ public class reviewMapper {
         review.setDate(dto.date());
         review.setScore(dto.score());
         review.setComment(dto.comment());
-        productRepo.findById(dto.productId()).orElse(null).addReview(review);
-        productRepo.findById(dto.productId()).orElse(null).updateRating(dto.score());
+        var product = productRepo.findById(dto.productId()).orElse(null);
+        product.addReview(review);
+        product.updateRating(dto.score());
+        productRepo.save(product);
         return review;
     }
     // public reviewResponseDto tReviewResponseDto(review review){

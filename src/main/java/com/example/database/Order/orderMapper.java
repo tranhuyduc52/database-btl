@@ -30,6 +30,9 @@ public class orderMapper {
     private productMapper productMapper;
     @Autowired
     private employeeMapper employeeMapper;
+    @Autowired
+    private hasRepo hasRepo;
+    
     public _order t_order(orderDto dto,String phoneNumber){
         var order= new _order();
         customerRepo.findByPhoneNumber(dto.customerPhoneNumber()).addOrder(order);
@@ -44,7 +47,8 @@ public class orderMapper {
             order.addHas(has);
             var product = productRepo.findById(i.productId()).orElse(null);
             product.addHas(has);
-            total_charge+=product.getUnit_price()*i.quantity()*product.getDiscount();
+            hasRepo.save(has);
+            total_charge+=product.getUnit_price()*i.quantity()*product.getDiscount()/100;
         }
         order.setTotal_charge(total_charge);
         return order;
