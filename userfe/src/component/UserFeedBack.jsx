@@ -11,7 +11,7 @@ function UserFeedBack({toggleVisibility, response, proID}) {
         const month = String(today.getMonth() + 1).padStart(2, '0'); 
         const year = today.getFullYear();
     
-        return `${day}/${month}/${year}`;
+        return `${year}-${month}-${day}`;
     };
 
     const FeedBackRef = useRef();
@@ -41,9 +41,6 @@ function UserFeedBack({toggleVisibility, response, proID}) {
             comment: comment,
             productId: productId
         }
-
-        console.log(token);
-        console.log(cmt);
 
         try {
             const res = await axios.post(

@@ -48,8 +48,7 @@ function UserDetailProduct({ toggle, toggleVisibility, response, toggleFeedBack}
                             </div>
                             <ul className="detail-product-middle-right-ul">
                                 {response.map((item, index) => (
-                                    console.log(item),
-                                    <li key={item}
+                                    <li key={index}
                                     className='detail-product-middle-right-li'>
                                         <div className="detail-product-middle-right-user">
                                             <p className="detail-product-middle-right-name">
