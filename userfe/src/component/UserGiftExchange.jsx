@@ -1,6 +1,7 @@
 import './UserGiftExchange.css'
 import React, { useState, useEffect, useRef }  from 'react';
 import axios from 'axios';
+import UserGiftHistory from './UserGiftHistory';
 
 
 function UserGiftExchange() {
@@ -20,7 +21,6 @@ function UserGiftExchange() {
                     }
                 )
                 setGift(res.data);
-                console.log(res.data);
 
                 const token = localStorage.getItem("token");
                 const point = await axios.get(
@@ -43,10 +43,51 @@ function UserGiftExchange() {
         fetchGift();
     }, [])
 
-    const SendGift = async(e) => {
-        
-    }
+    const getCurrentDate = () => {
+        const today = new Date(); 
     
+        const day = String(today.getDate()).padStart(2, '0'); 
+        const month = String(today.getMonth() + 1).padStart(2, '0'); 
+        const year = today.getFullYear();
+    
+        return `${year}-${month}-${day}`;
+    };
+
+    const SendGift = async(e) => {
+        const token = localStorage.getItem("token");
+
+        const date = getCurrentDate();
+        const giftId = selectedData.current.id;
+        const quantity = 1;
+
+        const giftExchange = {
+            giftId: giftId,
+            quantity: quantity,
+            date: date
+        }
+
+        try {
+            const res = await axios.post(
+                "http://localhost:8080/customer/gift/exchange",
+                giftExchange, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            )
+        }
+        catch(err) {
+            setErr(err.message || "Something went wrong!")
+        }
+    }
+    const selectedData = useRef({id: "", point: ""})
+
+    const [giftHistory, setHistory] = useState(false);
+
+    const HandleGiftHistory = () => {
+        setHistory((prev) => !prev);
+    }
 
     return (
         <>
@@ -71,6 +112,11 @@ function UserGiftExchange() {
                                         </svg>
                                         {point}
                                     </li>
+                                    <li className="box-giftPoint-left-li
+                                    box-giftPoint-left-historyExchange"
+                                    onClick={() => HandleGiftHistory()}>
+                                        Lịch sử đổi quà
+                                    </li>
                                 </ul>
                             </div>
                             <div className="box-giftPoint-right">
@@ -94,13 +140,17 @@ function UserGiftExchange() {
                                                 <label className="box-giftPoint-right-label">
                                                     Chọn
                                                     <input type="radio" className="box-giftPoint-right-input" 
-                                                    name='voucher'/>
+                                                    name='voucher' value={item.point}
+                                                    onChange={() => {
+                                                        selectedData.current = {id: item.id, point: item.point}
+                                                    }}/>
                                                 </label>
                                             </div>
                                         </li>
                                     ))}
                                 </ul>
-                                <button className="box-giftPoint-right-button">
+                                <button className="box-giftPoint-right-button"
+                                onClick={() => {SendGift()}}>
                                     Đổi quà
                                 </button>
                             </div>
@@ -108,6 +158,7 @@ function UserGiftExchange() {
                     </div>
                 </div>
             </div>
+            {giftHistory && <UserGiftHistory/>}
         </>
     );
 }

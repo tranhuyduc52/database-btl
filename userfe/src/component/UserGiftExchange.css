@@ -153,3 +153,12 @@
     cursor: pointer;
     transition: all 0.2s;
   }
+.box-giftPoint-left-historyExchange {
+  text-decoration: underline;
+  color: #014175;
+  font-size: 16px;
+}
+.box-giftPoint-left-historyExchange:hover {
+  cursor: pointer;
+  color: #0378d7;
+}

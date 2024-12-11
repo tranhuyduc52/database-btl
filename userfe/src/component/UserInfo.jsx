@@ -3,7 +3,7 @@ import { use, useRef } from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import React from 'react';
-
+import UserOrder from './UserOrder';
 
 
 function UserFormInfo() {
@@ -149,7 +149,7 @@ function UserFormInfo() {
     );
 }
 
-function UserPersonalInfo() {
+function UserPersonalInfo({ toggle }) {
     const [userInfo, setuserInfo] = useState("");
     const [error, setError] = useState(null);
 
@@ -176,6 +176,8 @@ function UserPersonalInfo() {
 
         fetchUserInfo();
     }, [])
+
+    
 
     return (
         <>
@@ -209,18 +211,29 @@ function UserPersonalInfo() {
                         }</p>
                     </li>
                 </ul>
+                <button className="PersonalInfo-button"
+                onClick={toggle}>
+                    Xem đơn hàng
+                </button>
             </div>
         </>
     );
 }
 
 function UserInfo() {
+    const [order, setOrder] = useState(false);
+
+    const HandleOrder = () => {
+        setOrder((prev) => !prev);
+    }
+
     return (
         <div className='userInfoScreen'>
             <div className="userInfoScreen-mid">
                 <UserFormInfo/>
-                <UserPersonalInfo/>
+                <UserPersonalInfo toggle={HandleOrder}/>
             </div>
+            {order && <UserOrder/>}
         </div>
     );
 }
