@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class schedule {
     @EmbeddedId
-    private schedule_embed id;
+    private schedule_embed id = new schedule_embed();
 
     @ManyToOne
     @MapsId("employeeId")
