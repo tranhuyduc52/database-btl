@@ -59,6 +59,7 @@ public class employeeService {
             }
         }
         employee.setTotalSalary(totalSalary);
+        repo.save(employee);
     }
     
 }
