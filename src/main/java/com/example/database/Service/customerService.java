@@ -30,7 +30,7 @@ public class customerService {
     private customerMapper customerMapper;
     @Autowired
     DataSource dataSource;
-    private JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
+
     public customerUpdateDto getInfo(String phoneNumber){
         return customerMapper.tCustomerUpdateDto( repo.findByPhoneNumber(phoneNumber));
     }
@@ -48,6 +48,7 @@ public class customerService {
     }
     public void delCustomerByUsername(String phoneNumber){
         repo.deleteByPhoneNumber(phoneNumber);
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         manager.deleteUser(phoneNumber);
     }
     public void updateCustomerInfo(customerUpdateDto dto){

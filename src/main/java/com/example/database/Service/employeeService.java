@@ -26,7 +26,7 @@ public class employeeService {
     private employeeMapper employeeMapper;
     @Autowired
     DataSource dataSource;
-    private JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
+
     public List<employeeResponseDto> findAllEmployee(){
         return repo.findAll().stream()
         .map(employeeMapper::tEmployeeResponseDto)
@@ -37,6 +37,7 @@ public class employeeService {
     }
     public void delEmployee(int id){
         repo.deleteById(id);
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         manager.deleteUser(repo.findById(id).orElse(null).getPhoneNumber());
     }
     public void updateEmployee(employeeUpdateDto dto){
