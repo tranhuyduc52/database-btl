@@ -1,6 +1,7 @@
 .userInfoScreen {
     width: 100%;
     background-color: #fff;
+    background-color: #f1f4f1;
 }
 .userInfoScreen-mid {
     max-width: 1240px;
@@ -20,6 +21,7 @@
     margin: 0 20px;
     position: relative;
     box-sizing: border-box;
+    background-color: #fff;
 }
 .userInfo-form-title, .Pinfo-title {
     margin: 0;
@@ -80,6 +82,8 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    position: relative;
 }
 .Pinfo {
     font-size: 14px;
@@ -88,4 +92,22 @@
 }
 .Pinfo1 {
     font-weight: 500;
+}
+.PersonalInfo-button {
+    height: 40px;
+    width: 140px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    background-color: #025048;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.PersonalInfo-button:hover {
+    cursor: pointer;
+    background-color: #029b8c;
+    transition: all 0.2s ease;
 }
