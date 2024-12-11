@@ -39,16 +39,15 @@ public class orderMapper {
         customerRepo.findByPhoneNumber(dto.customerPhoneNumber()).addOrder(order);
         employeeRepo.findByPhoneNumber(phoneNumber).addOrder(order);
         order.setOrder_time(dto.order_time());
-        // order.setPayment_method(dto.payment_method());
         var producList = dto.producList();
-        var total_charge = 0;
+        float total_charge = 0;
         for(var i : producList){
             var has = new has();
             has.setQuantity(i.quantity());
             order.addHas(has);
             var product = productRepo.findById(i.productId()).orElse(null);
             product.addHas(has);
-            var price = product.getUnit_price()*i.quantity()*product.getDiscount()/100;
+            float price = product.getUnit_price()*i.quantity()*(100-product.getDiscount())/100;
             has.setPrice(price);
             hasRepo.save(has);
             total_charge+=price;
