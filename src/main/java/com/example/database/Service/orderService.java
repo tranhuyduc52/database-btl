@@ -29,4 +29,12 @@ public class orderService {
     public void delOrder(int id){
         repo.deleteById(id);
     }
+    public float calIncomeEachMonth(int year, int month){
+        var list = repo.findByMonthAndYear(year, month);
+        float res = 0;
+        for(var i:list){
+            res+=i.getTotal_charge();
+        }
+        return res;
+    }
 }

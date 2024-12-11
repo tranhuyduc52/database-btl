@@ -145,9 +145,13 @@ public class managerController {
         //TODO: process PUT request
         giftService.updateGift(dto);
     }
-    @GetMapping("view/exchange")
+    @GetMapping("/view/exchange")
     public List<exchangeResponseDto> getAllExchange() {
         return exchangeService.getAllExchange();
+    }
+    @GetMapping("/income")
+    public float incomeEachMonth(@RequestParam int year,@RequestParam int month) {
+        return orderService.calIncomeEachMonth(year, month);
     }
     
 }

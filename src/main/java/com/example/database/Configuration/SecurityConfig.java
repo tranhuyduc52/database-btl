@@ -61,11 +61,11 @@ public class SecurityConfig {
         //                 session.sessionCreationPolicy(
         //                         SessionCreationPolicy.STATELESS)
         // );
-        http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
+        // http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
         // http.formLogin(formLogin -> 
-        //         formLogin.loginPage("/signin") // Custom login page
-        //                 .successHandler(customAuthenticationSuccessHandler) // Redirect on success
-        //                 .permitAll()
+        //         formLogin.loginProcessingUrl("/public/signin") // Endpoint nhận yêu cầu đăng nhập từ React
+        //         .successHandler(customAuthenticationSuccessHandler) // Gắn success handler
+        //         .permitAll()
         // );
         http.httpBasic(withDefaults());
         http.headers(headers -> headers
