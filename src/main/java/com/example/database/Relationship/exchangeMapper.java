@@ -13,6 +13,7 @@ public class exchangeMapper {
     private customerRepo customerRepo;
     @Autowired 
     private giftRepo giftRepo;
+
     public exchangeResponseDto tExchangeResponseDto(exchange exchange){
         return new exchangeResponseDto(exchange.getQuantity(),exchange.getDate(),exchange.getCustomer().getName(),exchange.getGift().getName());
     }

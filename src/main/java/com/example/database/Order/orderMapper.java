@@ -14,6 +14,7 @@ import com.example.database.Product.productMapper;
 import com.example.database.Relationship.has;
 import com.example.database.Repository.customerRepo;
 import com.example.database.Repository.employeeRepo;
+import com.example.database.Repository.hasRepo;
 import com.example.database.Repository.productRepo;
 
 @Service
@@ -47,8 +48,10 @@ public class orderMapper {
             order.addHas(has);
             var product = productRepo.findById(i.productId()).orElse(null);
             product.addHas(has);
+            var price = product.getUnit_price()*i.quantity()*product.getDiscount()/100;
+            has.setPrice(price);
             hasRepo.save(has);
-            total_charge+=product.getUnit_price()*i.quantity()*product.getDiscount()/100;
+            total_charge+=price;
         }
         order.setTotal_charge(total_charge);
         return order;
