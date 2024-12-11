@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class has {
     @EmbeddedId
-    private has_embed id;
+    private has_embed id = new has_embed();
     @ManyToOne
     @MapsId("_orderId")
     @JoinColumn(name = "_order_ID")

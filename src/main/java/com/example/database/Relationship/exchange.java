@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class exchange {
     @EmbeddedId
-    private exchange_embed id;
+    private exchange_embed id = new exchange_embed();
     @ManyToOne
     @MapsId("customerId")
     @JoinColumn(name = "customer_ID")

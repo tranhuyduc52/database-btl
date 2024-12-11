@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class review {
     @EmbeddedId
-    private review_embed id;
+    private review_embed id = new review_embed();
     @ManyToOne
     @MapsId("customerId")
     @JoinColumn(name = "customer_ID")
