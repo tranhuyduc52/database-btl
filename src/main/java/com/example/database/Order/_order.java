@@ -9,6 +9,7 @@ import com.example.database.Employee.employee;
 import com.example.database.Relationship.has;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,7 +28,6 @@ public class _order {
     private int id;
     private float total_charge;
     private Date order_time;
-
 
     @OneToMany(mappedBy = "_order")
     private List<has> hases = new ArrayList<>();

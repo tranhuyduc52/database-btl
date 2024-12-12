@@ -17,9 +17,13 @@ public class orderService {
     private orderRepo repo;
     @Autowired
     private orderMapper orderMapper;
+    @Autowired
+    hasService hasService;
 
     public void createOrder(orderDto dto,String phoneNumber){
-        repo.save(orderMapper.t_order(dto,phoneNumber));
+        var order = orderMapper.t_order(dto,phoneNumber);
+        repo.save(order);
+        hasService.createHas(dto,order.getId());
     }
     public List<orderResponseDto> getAllOrder(){
         return repo.findAll().stream()

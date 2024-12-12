@@ -54,8 +54,8 @@ public class employeeService {
         var list = employee.getSchedules();
         int totalSalary = 0;
         for(var i:list){
-            if(i.getDate().toLocalDate().getMonthValue()==dto.month()&&i.getDate().toLocalDate().getYear()==dto.year()){
-                totalSalary+=employee.getUnitSalary();
+            if(i.getId().getDate().toLocalDate().getMonthValue()==dto.month()&&i.getId().getDate().toLocalDate().getYear()==dto.year()){
+                totalSalary+=employee.getUnitSalary()*i.getShift().getHour();
             }
         }
         employee.setTotalSalary(totalSalary);

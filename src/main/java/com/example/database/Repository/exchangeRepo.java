@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Embedded.exchange_embed;
 import com.example.database.Relationship.exchange;
 import com.example.database.Customer.customer;
 
 
-public interface exchangeRepo extends JpaRepository<exchange,exchange_embed>{
+public interface exchangeRepo extends JpaRepository<exchange,Integer>{
     List<exchange> findByCustomer(customer customer);
 }
