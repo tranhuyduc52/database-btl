@@ -17,12 +17,12 @@ public class scheduleMapper {
     private shiftMapper shiftMapper;
     public schedule tSchedule(scheduleDto dto){
         var schedule = new schedule();
-        schedule.setDate(dto.date());
+        schedule.getId().setDate(dto.date());
         employeeRepo.findById(dto.employeeId()).orElse(null).addSchedule(schedule);
         shiftRepo.findById(dto.shiftId()).orElse(null).addSchedule(schedule);
         return schedule;
     }
     public scheduleResponseDto tScheduleResponseDto(schedule schedule){
-        return new scheduleResponseDto(schedule.getId(),schedule.getDate(),schedule.getEmployee().getName(),shiftMapper.tShiftResponseDto( schedule.getShift()));
+        return new scheduleResponseDto(schedule.getId(),schedule.getId().getDate(),schedule.getEmployee().getName(),shiftMapper.tShiftResponseDto( schedule.getShift()));
     }
 }
