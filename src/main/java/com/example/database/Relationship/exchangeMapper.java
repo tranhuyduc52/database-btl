@@ -25,8 +25,8 @@ public class exchangeMapper {
         gift.addExchange(exchange);
         var customer = customerRepo.findByPhoneNumber(phoneNumber);
         customer.addExchange(exchange);
-        customer.updatePoint(dto.quantity(),gift.getPoint());
-        customerRepo.save(customer);
+        // customer.updatePoint(dto.quantity(),gift.getPoint());
+        // customerRepo.save(customer);
         return exchange;
     }
 }

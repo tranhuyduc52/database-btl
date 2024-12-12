@@ -34,5 +34,4 @@ public class schedule {
     @JoinColumn(name = "shift_ID")
     private shift shift;
 
-    private Date date;
 }
