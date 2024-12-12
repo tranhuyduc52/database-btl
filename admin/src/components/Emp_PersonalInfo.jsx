@@ -89,7 +89,6 @@ const Emp_PersonalInfo = () => {
       gender: gender,
       name: name
     }
-    console.log(token);
 
     try {
       const res = await axios.patch(
@@ -172,6 +171,7 @@ const Emp_PersonalInfo = () => {
                         name="phone"
                         onChange={handleInputChange}
                         ref={phoneRef}
+                        disabled
                       />
                     ) : (
                       info.phoneNumber
