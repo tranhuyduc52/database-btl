@@ -9,6 +9,7 @@ const Emp_PersonalInfo = () => {
 
   const [err, setErr] = useState("");
   const [info, setInfo] = useState([]);
+  const [phone, setPhone] = useState("");
 
   // Giả lập dữ liệu API
   useEffect(() => {
@@ -26,6 +27,7 @@ const Emp_PersonalInfo = () => {
           }
         )
         setInfo(res.data);
+        setPhone(res.data.phoneNumber);
       }
       catch(err) {
         setErr(err.message);
@@ -79,7 +81,6 @@ const Emp_PersonalInfo = () => {
     const name = nameRef.current.value;
     const dob = dobRef.current.value;
     const gender = genderRef.current;
-    const phone = phoneRef.current.value;
     const addr = addrRef.current.value;
 
     const emp = {
