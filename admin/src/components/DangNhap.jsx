@@ -8,7 +8,10 @@ const DangNhap = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+
+    const userRef = useRef("");
+    const passRef = useRef("");
 
     const mockData_Admin = {
         username: "ad",
@@ -31,11 +34,7 @@ const DangNhap = () => {
         }
     };
 
-    const [err, setErr] = useState("");
-    const userRef = useRef("");
-    const passRef = useRef("");
-
-    const loginAccount = async(e) => {
+    const LoginClick = async(e) => {
         const username = userRef.current.value;
         const password = passRef.current.value;
 
@@ -53,10 +52,12 @@ const DangNhap = () => {
                     }
                 }
             )
+
             localStorage.setItem("token", res.data.jwtToken);
+            console.log(res.data.jwtToken);
         }
         catch (err) {
-            setErr(err.message || "Something went wrong!")
+            setErrorMessage(err.message || "Something went wrong!")
         }
     }
 
@@ -97,11 +98,7 @@ const DangNhap = () => {
                         ref={passRef}
                     />
                     <button type="submit" className="login-submit-button"
-                    onClick={loginAccount}>
-                        Đăng nhập</button>
-                    {/* <button className="login-submit-button"
-                    onClick={createAccount}>
-                        Đăng ký</button> */}
+                    onClick={LoginClick}>Đăng nhập</button>
                 </form>
                 {errorMessage && <p id="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
             </div>

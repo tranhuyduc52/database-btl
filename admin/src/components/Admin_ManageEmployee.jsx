@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Admin_Header from './Admin_Header'; 
-import "../assets/css/Admin_ManageEmployee.css";
-import axios from 'axios';
+import "../assets/css/Admin_ManageEmployee.css"; 
 
 const Admin_ManageEmployee = () => {
-
-
+    const navigate = useNavigate(); // Hook để chuyển hướng
     const [employeeData, setEmployeeData] = useState([]);
     const [filters, setFilters] = useState({
         idEmployee: '',
@@ -18,47 +17,40 @@ const Admin_ManageEmployee = () => {
         startDate: '',
         position: '',
     });
-    const [err, setErr] = useState("");
-    const [emp, setEmp] = useState([]);
+    const [updateMessage, setUpdateMessage] = useState(""); // Thông báo cập nhật
 
     // Giả lập API lấy dữ liệu nhân viên
     useEffect(() => {
-        const fetchEmployee = async(e) => {
-            try {
-                const token = localStorage.getItem("token");
-
-                const res = await axios.get(
-                    "http://localhost:8080/manager/view/employees", 
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        }
-                    }
-                )
-                setEmp(res.data);
-            }
-            catch(err) {
-                setErr(err.message || "Something went wrong!")
-            }
-        }
-
         const data = [
-            { id: "EMP001", name: "Phan Tấn D", gender: "Nam", birthDate: "01/01/2001", phone: "0123456789", address: "Thủ Đức, Tp.HCM", email: "phantand@shopcoffee.com", startDate: "04/04/2024", position: "Phục vụ", salaryCoefficient: 12, totalSalary: "5000000 VNĐ" },
-            { id: "EMP002", name: "Nguyễn Thị A", gender: "Nữ", birthDate: "12/12/1995", phone: "0987654321", address: "Quận 1, Tp.HCM", email: "nguyentha@shopcoffee.com", startDate: "01/01/2023", position: "Nhân viên lễ tân", salaryCoefficient: 10, totalSalary: "4000000 VNĐ" },
-            { id: "EMP003", name: "Trần Thị B", gender: "Nữ", birthDate: "11/11/1990", phone: "0976543210", address: "Bình Thạnh, Tp.HCM", email: "tranthi@shopcoffee.com", startDate: "10/10/2021", position: "Quản lý", salaryCoefficient: 15, totalSalary: "7500000 VNĐ" },
-            { id: "EMP004", name: "Lê Minh C", gender: "Nam", birthDate: "22/08/1988", phone: "0965432109", address: "Gò Vấp, Tp.HCM", email: "leminhc@shopcoffee.com", startDate: "01/06/2022", position: "Nhân viên pha chế", salaryCoefficient: 11, totalSalary: "4500000 VNĐ" },
-            { id: "EMP005", name: "Hoàng Thị D", gender: "Nữ", birthDate: "03/05/1993", phone: "0912345678", address: "Quận 2, Tp.HCM", email: "hoangthi@shopcoffee.com", startDate: "15/09/2021", position: "Thu ngân", salaryCoefficient: 9, totalSalary: "4000000 VNĐ" },
+            { id: "EMP001", name: "Phan Tấn D", gender: "Nam", birthDate: "01/01/2001", phone: "0123456789", address: "Thủ Đức, Tp.HCM", email: "phantand@shopcoffee.com", startDate: "04/04/2024", position: "Phục vụ", salaryCoefficient: 12, totalSalary: 5000000 },
+            { id: "EMP002", name: "Nguyễn Thị A", gender: "Nữ", birthDate: "12/12/1995", phone: "0987654321", address: "Quận 1, Tp.HCM", email: "nguyentha@shopcoffee.com", startDate: "01/01/2023", position: "Nhân viên lễ tân", salaryCoefficient: 10, totalSalary: 4000000 },
+            { id: "EMP003", name: "Trần Thị B", gender: "Nữ", birthDate: "11/11/1990", phone: "0976543210", address: "Bình Thạnh, Tp.HCM", email: "tranthi@shopcoffee.com", startDate: "10/10/2021", position: "Quản lý", salaryCoefficient: 15, totalSalary: 7500000 },
+            { id: "EMP004", name: "Lê Minh C", gender: "Nam", birthDate: "22/08/1988", phone: "0965432109", address: "Gò Vấp, Tp.HCM", email: "leminhc@shopcoffee.com", startDate: "01/06/2022", position: "Nhân viên pha chế", salaryCoefficient: 11, totalSalary: 4500000 },
+            { id: "EMP005", name: "Hoàng Thị D", gender: "Nữ", birthDate: "03/05/1993", phone: "0912345678", address: "Quận 2, Tp.HCM", email: "hoangthi@shopcoffee.com", startDate: "15/09/2021", position: "Thu ngân", salaryCoefficient: 9, totalSalary: 4000000 },
         ];
         setEmployeeData(data);
-
-        fetchEmployee();
     }, []);
 
     // Lọc dữ liệu
     const handleFilterChange = (e) => {
         const { id, value } = e.target;
         setFilters((prev) => ({ ...prev, [id]: value.toLowerCase() }));
+    };
+
+    // Cập nhật thông báo khi nhấn "Cập nhật"
+    const handleUpdateClick = () => {
+        setUpdateMessage("Đang cập nhật dữ liệu...");
+        setTimeout(() => {
+            setUpdateMessage("Cập nhật lương hoàn tất");
+        }, 2000); // Hiển thị thông báo sau 2 giây
+        setTimeout(() => {
+            setUpdateMessage(""); // Ẩn thông báo sau 3 giây
+        }, 5000);
+    };
+
+    // Hàm định dạng tổng lương
+    const formatSalary = (salary) => {
+        return salary.toLocaleString('vi-VN') + ' VNĐ';
     };
 
     const filteredData = employeeData.filter((employee) => {
@@ -81,7 +73,16 @@ const Admin_ManageEmployee = () => {
             <Admin_Header />
 
             {/* Nội dung chính */}
-            <h2 className="employee-title">QUẢN LÝ NHÂN VIÊN</h2>
+            <h2 className="employee-title">
+                QUẢN LÝ NHÂN VIÊN
+                <button 
+                    className="manage-employee-btn"
+                    style={{ marginLeft: 'auto', marginRight: '90px' }}
+                    onClick={() => navigate('/admin/manage-employee/edit')}
+                >
+                    Quản lý thông tin nhân viên
+                </button>
+            </h2>
 
             {/* Bảng nhân viên */}
             <div className="employee-table-container">
@@ -90,14 +91,14 @@ const Admin_ManageEmployee = () => {
                         <tr>
                             <th>ID Nhân viên</th>
                             <th>Tên Nhân viên</th>
-                            {/* <th>Giới tính</th>
-                            <th>Ngày tháng năm sinh</th> */}
+                            <th>Giới tính</th>
+                            <th>Ngày tháng năm sinh</th>
                             <th>Số điện thoại</th>
-                            {/* <th>Địa chỉ</th>
-                            <th>Email</th> */}
+                            <th>Địa chỉ</th>
+                            <th>Email</th>
                             <th>Ngày bắt đầu làm việc</th>
                             <th>Vị trí</th>
-                            {/* <th>Hệ số lương</th> */}
+                            <th>Hệ số lương</th>
                             <th>Tổng lương</th>
                         </tr>
                     </thead>
@@ -105,36 +106,41 @@ const Admin_ManageEmployee = () => {
                         <tr>
                             <td><input type="text" id="idEmployee" className="filter-input" placeholder="Lọc theo ID" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="nameEmployee" className="filter-input" placeholder="Lọc theo tên" onChange={handleFilterChange} /></td>
-                            {/* <td><input type="text" id="gender" className="filter-input" placeholder="Lọc theo giới tính" onChange={handleFilterChange} /></td>
-                            <td><input type="text" id="birthDate" className="filter-input" placeholder="Lọc theo ngày sinh" onChange={handleFilterChange} /></td> */}
+                            <td><input type="text" id="gender" className="filter-input" placeholder="Lọc theo giới tính" onChange={handleFilterChange} /></td>
+                            <td><input type="text" id="birthDate" className="filter-input" placeholder="Lọc theo ngày sinh" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="phone" className="filter-input" placeholder="Lọc theo số điện thoại" onChange={handleFilterChange} /></td>
-                            {/* <td><input type="text" id="address" className="filter-input" placeholder="Lọc theo địa chỉ" onChange={handleFilterChange} /></td>
-                            <td><input type="text" id="email" className="filter-input" placeholder="Lọc theo email" onChange={handleFilterChange} /></td> */}
+                            <td><input type="text" id="address" className="filter-input" placeholder="Lọc theo địa chỉ" onChange={handleFilterChange} /></td>
+                            <td><input type="text" id="email" className="filter-input" placeholder="Lọc theo email" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="startDate" className="filter-input" placeholder="Lọc theo ngày bắt đầu" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="position" className="filter-input" placeholder="Lọc theo vị trí" onChange={handleFilterChange} /></td>
-                            {/* <td></td> */}
                             <td></td>
+                            <td><button className="button-salary-update" onClick={handleUpdateClick}>Cập nhật</button></td>
                         </tr>
                     </tbody>
                     <tbody id="employee-data">
-                        {emp.map((employee, index) => (
+                        {filteredData.map((employee, index) => (
                             <tr key={index}>
                                 <td>{employee.id}</td>
                                 <td>{employee.name}</td>
-                                {/* <td>{employee.gender}</td>
-                                <td>{employee.birthDate}</td> */}
-                                <td>{employee.phoneNumber}</td>
-                                {/* <td>{employee.address}</td> */}
-                                {/* <td>{employee.email}</td> */}
+                                <td>{employee.gender}</td>
+                                <td>{employee.birthDate}</td>
+                                <td>{employee.phone}</td>
+                                <td>{employee.address}</td>
+                                <td>{employee.email}</td>
                                 <td>{employee.startDate}</td>
                                 <td>{employee.position}</td>
-                                {/* <td>{employee.salaryCoefficient}</td> */}
-                                <td>{employee.unitSalary}</td>
+                                <td>{employee.salaryCoefficient}</td>
+                                <td>{formatSalary(employee.totalSalary)}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Thông báo cập nhật */}
+            {updateMessage && (
+                <div className="success-message">{updateMessage}</div>
+            )}
         </div>
     );
 };

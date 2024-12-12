@@ -1,8 +1,8 @@
 .schedule-title {
     text-align: center;
     margin-top: 140px;
+    margin-left: 750px;
     font-size: 30px;
-    padding-bottom: 20px;
 }
 
 /* Vùng chứa bảng */
@@ -65,4 +65,28 @@ tr:hover {
 /* Cố định nền cho các cột và các hàng dữ liệu */
 tbody td {
     background-color: #f9f9f9;
+}
+
+
+.schedule-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.create-schedule-button {
+    margin-top: 140px;
+    margin-right: 85px;
+    background-color: #16a18b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.create-schedule-button:hover {
+    background-color: #2a7b5e;
 }

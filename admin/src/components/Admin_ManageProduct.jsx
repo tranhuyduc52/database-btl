@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Admin_Header from './Admin_Header'; 
-import "../assets/css/Admin_ManageProduct.css";
-import axios from 'axios';
+import "../assets/css/Admin_ManageProduct.css"; 
+import { useNavigate } from 'react-router-dom'; 
 
 const Admin_ManageProduct = () => {
     const [productData, setProductData] = useState([]);
@@ -14,23 +14,10 @@ const Admin_ManageProduct = () => {
         discount: '',
     });
 
+    const navigate = useNavigate(); 
+
     // Giả lập API để lấy dữ liệu sản phẩm
-    const [err, setErr] = useState("");
-    const [product, setProduct] =useState("");
-
-
     useEffect(() => {
-        const fetchProduct = async(e) => {
-            const token = localStorage.getItem("token");
-
-            try {
-                
-            }
-            catch(err) {
-                setErr(err.message || "Something went wrong!")
-            }
-        }
-
         const data = [
             { id: "001", name: "Phindi cafe", rating: "4.8", description: "#N/A", price: "47,000 VNĐ", discount: "0%" },
             { id: "002", name: "Trà Sen Vàng", rating: "4.6", description: "#N/A", price: "45,000 VNĐ", discount: "10%" },
@@ -58,6 +45,10 @@ const Admin_ManageProduct = () => {
         );
     });
 
+    const handleEditProductClick = () => {
+        navigate("/admin/manage-product/edit");
+    };
+
     return (
         <div>
             {/* Header */}
@@ -65,6 +56,9 @@ const Admin_ManageProduct = () => {
 
             {/* Nội dung chính */}
             <h2 className="product-title">QUẢN LÝ SẢN PHẨM</h2>
+
+            {/* Nút Thông tin quà & sản phẩm */}
+            <button className="edit-product-button" onClick={handleEditProductClick}>Thông tin quà & sản phẩm</button>
 
             {/* Bảng sản phẩm */}
             <div className="product-table-container">

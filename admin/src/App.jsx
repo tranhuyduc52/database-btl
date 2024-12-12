@@ -11,6 +11,11 @@ import Emp_Header from './components/Emp_Header';
 import Emp_OrderForm from './components/Emp_OrderForm'; 
 import Emp_HistoryGift from './components/Emp_HistoryGift'; 
 import Emp_PersonalInfo from './components/Emp_PersonalInfo';
+import Admin_ManageWorkSchedule_Edit from './components/Admin_ManageWorkSchedule_Edit'; 
+import Admin_ManageEmployee_Edit from './components/Admin_ManageEmployee_Edit';
+import Admin_ManageProduct_Edit from './components/Admin_ManageProduct_Edit';
+import Admin_Revenue from './components/Admin_Revenue';
+
 
 const App = () => {
   return (
@@ -25,6 +30,11 @@ const App = () => {
         <Route path="/admin/manage-employee" element={<Admin_ManageEmployee />} />
         <Route path="/admin/manage-product" element={<Admin_ManageProduct />} />
         <Route path="/admin/manage-order" element={<Admin_ManageOrder />} />
+        <Route path="/admin/manage-work-schedule/edit" element={<Admin_ManageWorkSchedule_Edit />} /> 
+        <Route path="/admin/manage-employee/edit" element={<Admin_ManageEmployee_Edit />} /> 
+        <Route path="/admin/manage-product/edit" element={<Admin_ManageProduct_Edit />} /> 
+        <Route path="/admin/revenue" element={<Admin_Revenue />} /> 
+
 
         {/* Route Emp */}
         <Route path="/emp/order-form" element={<Emp_OrderForm />} />

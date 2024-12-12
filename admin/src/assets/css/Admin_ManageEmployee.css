@@ -1,7 +1,27 @@
 .employee-title {
     text-align: center;
     margin-top: 140px;
+    margin-left: 680px;
     font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Button Quản lý thông tin nhân viên */
+.manage-employee-btn {
+    background-color: #16a18b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.manage-employee-btn:hover {
+    background-color: #155A3A;
 }
 
 /* Vùng chứa bảng */
@@ -56,16 +76,6 @@ tr.filter-row {
     padding: 5px;
 }
 
-/* Sort icons */
-.sort-icon {
-    cursor: pointer;
-    color: #1C5C3D;
-}
-
-.sort-icon i {
-    font-size: 18px;
-}
-
 /* Thêm hover cho bảng */
 tr:hover {
     background-color: #f0f0f0;
@@ -74,4 +84,38 @@ tr:hover {
 /* Cố định nền cho các cột và các hàng dữ liệu */
 tbody td {
     background-color: #f9f9f9;
+}
+
+/* Button cập nhật */
+.button-salary-update {
+    background-color: #064616;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-salary-update:hover {
+    background-color: #16a18b;
+}
+
+/* Thông báo cập nhật */
+.success-message {
+    color: green;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #dff0d8;
+    border: 2px solid #3c763d;
+    padding: 15px;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-style: italic;
 }

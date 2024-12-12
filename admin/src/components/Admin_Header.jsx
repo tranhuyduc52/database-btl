@@ -58,6 +58,7 @@ const Admin_Header = () => {
                     <a href="/admin/manage-employee" className="nav-link">QUẢN LÝ NHÂN VIÊN</a>
                     <a href="/admin/manage-product" className="nav-link">QUẢN LÝ SẢN PHẨM</a>
                     <a href="/admin/manage-order" className="nav-link">QUẢN LÝ ĐƠN HÀNG</a>
+                    <a href="/admin/revenue" className="nav-link">BÁO CÁO DOANH THU</a>
                 </nav>
             </div>
         </header>
