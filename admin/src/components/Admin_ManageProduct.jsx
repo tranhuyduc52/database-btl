@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Admin_Header from './Admin_Header'; 
 import "../assets/css/Admin_ManageProduct.css"; 
 import { useNavigate } from 'react-router-dom'; 
+import axios from 'axios';
 
 const Admin_ManageProduct = () => {
     const [productData, setProductData] = useState([]);
@@ -15,9 +16,31 @@ const Admin_ManageProduct = () => {
     });
 
     const navigate = useNavigate(); 
+    const [prod, setProd] = useState([]);
+    const [err, setErr] = useState("");
 
     // Giả lập API để lấy dữ liệu sản phẩm
     useEffect(() => {
+        const getProduct = async(e) => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/public/menu",
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    }
+                )
+                setProd(res.data);
+                console.log(res.data);
+            }
+            catch(err) {
+                setErr(err.message);
+            }
+        }
+
+        getProduct();
+
         const data = [
             { id: "001", name: "Phindi cafe", rating: "4.8", description: "#N/A", price: "47,000 VNĐ", discount: "0%" },
             { id: "002", name: "Trà Sen Vàng", rating: "4.6", description: "#N/A", price: "45,000 VNĐ", discount: "10%" },
@@ -84,13 +107,13 @@ const Admin_ManageProduct = () => {
                         </tr>
                     </tbody>
                     <tbody id="product-data">
-                        {filteredData.map((product, index) => (
+                        {prod.map((product, index) => (
                             <tr key={index}>
                                 <td>{product.id}</td>
                                 <td>{product.name}</td>
                                 <td>{product.rating}</td>
                                 <td>{product.description}</td>
-                                <td>{product.price}</td>
+                                <td>{product.unit_price}</td>
                                 <td>{product.discount}</td>
                             </tr>
                         ))}

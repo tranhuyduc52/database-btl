@@ -1,13 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Emp_Header from "./Emp_Header"; 
 import "../assets/css/Emp_PersonalInfo.css"; 
+import axios from "axios";
 
 const Emp_PersonalInfo = () => {
   const [personalInfo, setPersonalInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false); // Trạng thái chỉnh sửa
 
+  const [err, setErr] = useState("");
+  const [info, setInfo] = useState([]);
+
   // Giả lập dữ liệu API
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const getInfo = async(e) => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/employee/get/info",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            }
+          }
+        )
+        setInfo(res.data);
+      }
+      catch(err) {
+        setErr(err.message);
+      }
+    }
+    
+    getInfo();
+
     const mockData = {
       empId: "EMP001",
       name: "Trần Minh Hiếu",
@@ -36,6 +62,51 @@ const Emp_PersonalInfo = () => {
     console.log("Thông tin đã được lưu:", personalInfo);
   };
 
+  const nameRef = useRef("");
+  const dobRef = useRef("");
+  const genderRef = useRef(info.gender);
+  const phoneRef = useRef("");
+  const addrRef = useRef("");
+
+  const handleChange = (e) => {
+    genderRef.current = e.target.value;
+  }
+
+  const updateEmp = async(e) => {
+    setIsEditing(true);
+    const token = localStorage.getItem("token");
+
+    const name = nameRef.current.value;
+    const dob = dobRef.current.value;
+    const gender = genderRef.current;
+    const phone = phoneRef.current.value;
+    const addr = addrRef.current.value;
+
+    const emp = {
+      dob: dob,
+      phoneNumber: phone,
+      address: addr,
+      gender: gender,
+      name: name
+    }
+    console.log(token);
+
+    try {
+      const res = await axios.patch(
+        "http://localhost:8080/employee/update/info",
+        emp, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          }
+        }
+      )
+    }
+    catch(err) {
+      setErr(err.message);
+    }
+  }
+
   return (
     <div>
       <Emp_Header /> {/* Header */}
@@ -46,36 +117,32 @@ const Emp_PersonalInfo = () => {
             <table className="personal-info-table">
               <tbody>
                 <tr>
-                  <td><strong>Mã Nhân viên</strong></td>
-                  <td>{personalInfo.empId}</td>
-                </tr>
-                <tr>
                   <td><strong>Họ và tên</strong></td>
                   <td>
                     {isEditing ? (
                       <input
                         type="text"
                         name="name"
-                        value={personalInfo.name}
                         onChange={handleInputChange}
+                        ref={nameRef}
                       />
                     ) : (
-                      personalInfo.name
+                      info.name
                     )}
                   </td>
                 </tr>
                 <tr>
-                  <td><strong>Ngày tháng năm sinh</strong></td>
+                  <td><strong>Ngày sinh</strong></td>
                   <td>
                     {isEditing ? (
                       <input
                         type="date"
                         name="dob"
-                        value={personalInfo.dob}
                         onChange={handleInputChange}
+                        ref={dobRef}
                       />
                     ) : (
-                      personalInfo.dob
+                      info.dob
                     )}
                   </td>
                 </tr>
@@ -85,15 +152,14 @@ const Emp_PersonalInfo = () => {
                     {isEditing ? (
                       <select
                         name="gender"
-                        value={personalInfo.gender}
-                        onChange={handleInputChange}
+                        onChange={handleChange}
+                        defaultValue={info.gender}
                       >
-                        <option value="Nam">Nam</option>
-                        <option value="Nữ">Nữ</option>
-                        <option value="Khác">Khác</option>
+                        <option value="M">Nam</option>
+                        <option value="F">Nữ</option>
                       </select>
                     ) : (
-                      personalInfo.gender
+                      info.gender
                     )}
                   </td>
                 </tr>
@@ -104,17 +170,13 @@ const Emp_PersonalInfo = () => {
                       <input
                         type="text"
                         name="phone"
-                        value={personalInfo.phone}
                         onChange={handleInputChange}
+                        ref={phoneRef}
                       />
                     ) : (
-                      personalInfo.phone
+                      info.phoneNumber
                     )}
                   </td>
-                </tr>
-                <tr>
-                  <td><strong>Email</strong></td>
-                  <td>{personalInfo.email}</td> {/* Không cho phép chỉnh sửa Email */}
                 </tr>
                 <tr>
                   <td><strong>Địa chỉ</strong></td>
@@ -123,18 +185,18 @@ const Emp_PersonalInfo = () => {
                       <input
                         type="text"
                         name="address"
-                        value={personalInfo.address}
                         onChange={handleInputChange}
+                        ref={addrRef}
                       />
                     ) : (
-                      personalInfo.address
+                      info.address
                     )}
                   </td>
                 </tr>
               </tbody>
             </table>
             {isEditing ? (
-              <button className="edit-button" onClick={handleSave}>
+              <button className="edit-button" onClick={updateEmp}>
                 Lưu thay đổi
               </button>
             ) : (

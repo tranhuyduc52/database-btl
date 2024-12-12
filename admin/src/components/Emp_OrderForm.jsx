@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Emp_Header from "./Emp_Header"; 
 import "../assets/css/Emp_OrderForm.css"; 
+import axios from "axios";
 
 import traSenVangImage from "../assets/img/tra-sen-vang.svg";
 import phindiChocoImage from "../assets/img/phindi.svg";
@@ -115,18 +116,57 @@ const Emp_OrderForm = () => {
 
   const { totalAfterDiscount, pointsEarned, discountAmount } = calculateTotal();
 
+  const [err, setErr] = useState("");
+  const [ord, setOrd] = useState([]);
+
+  useEffect(() => {
+    const getOrder = async(e) => {
+      try {
+        const token = await axios.get(
+          "http://localhost:8080/public/menu",
+          {
+            headers: {
+              "Content-Type": "application/json",
+            }
+          }
+        )
+        setOrd(token.data);
+      }
+      catch(err) {
+        setErr(err.message);
+      }
+    }
+
+    getOrder();
+  }, []);
+
+  const chunkArray = (arr, chunkSize) => {
+    const chunks = [];
+
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  const orderChunks = chunkArray(ord, 5);
+
   return (
     <div>
       <Emp_Header /> {/* Header */}
       <main className="orderform-main-content">
         <div className="menu">
-          {mockProductData.map((product) => (
-            <div className="item" key={product.id} onClick={() => addProductToOrder(product)}>
-              <a href="#" className="product-link">
-                <img src={product.image} alt={product.name} className="product-image" />
-              </a>
-              <p>{product.name}</p>
-              <p>{formatPrice(product.price)}</p>
+          {orderChunks.map((chunk, rowIndex) => (
+            <div className="inMenu" key={rowIndex}>
+              {chunk.map((product, index) => (
+                <div className="item" key={index} onClick={() => addProductToOrder(product)}>
+                  <a href="#" className="product-link">
+                    <img src={traSenVangImage} alt={product.name} className="product-image" />
+                  </a>
+                  <p>{product.name}</p>
+                  <p>{formatPrice(product.unit_price)}</p>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -142,7 +182,7 @@ const Emp_OrderForm = () => {
                 placeholder="Nhập ID khách hàng" 
               />
             </p>
-            {orderDetails.map((item) => (
+            {ord.map((item) => (
               <div className="order-item" key={item.id}>
                 <span>{item.name}</span>
                 <div className="quantity-control">
@@ -150,7 +190,7 @@ const Emp_OrderForm = () => {
                   <span>{item.quantity}</span>
                   <span onClick={() => updateQuantity(item.id, "increase")}>+</span>
                 </div>
-                <span>{formatPrice(item.price * item.quantity)}</span>
+                <span>{formatPrice(item.unit_price * 1)}</span>
               </div>
             ))}
             <div className="summary">

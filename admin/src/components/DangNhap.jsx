@@ -61,6 +61,31 @@ const DangNhap = () => {
         }
     }
 
+    const RegistClick = async(e) => {
+        const username = userRef.current.value;
+        const password = userRef.current.value;
+
+        const admin = {
+            username: username,
+            password: password,
+        }
+
+        try {
+            const res = await axios.post(
+                "http://localhost:8080/public/admin",
+                admin, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+
+        }
+        catch(err) {
+            setErrorMessage(err.message || "Something")
+        }
+    }
+
     return (
         <div className="login-container">
             {/* Phần chứa hình ảnh */}

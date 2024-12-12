@@ -69,6 +69,52 @@ const Admin_ManageWorkSchedule_Edit = () => {
         }
     }
 
+    const startTimeRef = useRef("");
+    const endTimeRef = useRef("");
+
+    const CreateShift = async(e) => {
+        const date = dateRef.current.value;
+        const startTime = startTimeRef.current.value;
+        const endTime = endTimeRef.current.value;
+
+        const timeToMinute = (time) => {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        const startMinutes = timeToMinute(startTime);
+        const endMinutes = timeToMinute(endTime);
+
+        const durationMinutes = (endMinutes >= startMinutes)
+            ? endMinutes - startMinutes
+            : (1440 - startMinutes) + endMinutes;
+        const hour = durationMinutes / 60;
+        console.log(hour);
+
+        const shift = {
+            startTime: startTime,
+            endTime: endTime,
+            hour: hour
+        }
+
+        const token = localStorage.getItem("token");
+        try {
+            const res = await axios.post(
+                "http://localhost:8080/manager/create/shift",
+                shift, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+        }
+        catch(err) {
+            setErr(err.message || "Something went wrong!")
+        }
+    }
+
+
     return (
         <div>
             <Admin_Header /> {/* Header */}
@@ -119,7 +165,7 @@ const Admin_ManageWorkSchedule_Edit = () => {
                 <div className="shift-section">
                     <h2 className="create-shift-title">TẠO CA LÀM VIỆC</h2>
                     <form onSubmit={handleShiftSubmit}>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label>Ngày</label>
                             <input
                                 type="date"
@@ -127,8 +173,9 @@ const Admin_ManageWorkSchedule_Edit = () => {
                                 value={workShift.date}
                                 onChange={(e) => setWorkShift({ ...workShift, date: e.target.value })}
                                 required
+                                ref={dateRef}
                             />
-                        </div>
+                        </div> */}
                         <div className="form-group">
                             <label>Thời gian bắt đầu</label>
                             <input
@@ -137,6 +184,7 @@ const Admin_ManageWorkSchedule_Edit = () => {
                                 value={workShift.startTime}
                                 onChange={(e) => setWorkShift({ ...workShift, startTime: e.target.value })}
                                 required
+                                ref={startTimeRef}
                             />
                         </div>
                         <div className="form-group">
@@ -147,9 +195,11 @@ const Admin_ManageWorkSchedule_Edit = () => {
                                 value={workShift.endTime}
                                 onChange={(e) => setWorkShift({ ...workShift, endTime: e.target.value })}
                                 required
+                                ref={endTimeRef}
                             />
                         </div>
-                        <button type="submit" className="submit-button">Tạo</button>
+                        <button type="submit" className="submit-button"
+                        onClick={CreateShift}>Tạo</button>
                     </form>
                     {shiftSuccess && <p className="success-message">{shiftSuccess}</p>}
                 </div>

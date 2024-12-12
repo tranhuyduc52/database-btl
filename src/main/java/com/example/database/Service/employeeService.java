@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.database.Employee.employee;
 import com.example.database.Employee.employeeCalSalaryDto;
@@ -35,10 +36,12 @@ public class employeeService {
     public void addEmployee(employeeDto dto){
         repo.save(employeeMapper.tEmployee(dto));
     }
+    @Transactional
     public void delEmployee(int id){
-        repo.deleteById(id);
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        manager.deleteUser(repo.findById(id).orElse(null).getPhoneNumber());
+        var employee = repo.findById(id).orElse(null);
+        manager.deleteUser(employee.getPhoneNumber());
+        repo.deleteById(id);
     }
     public void updateEmployee(employeeUpdateDto dto){
         repo.updateEmployeeInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());

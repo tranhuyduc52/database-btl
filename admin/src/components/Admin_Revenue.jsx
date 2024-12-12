@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Admin_Header from './Admin_Header'; 
 import "../assets/css/Admin_Revenue.css"; 
+import axios from 'axios';
 
 const Admin_Revenue = () => {
     const [filters, setFilters] = useState({
@@ -47,6 +48,34 @@ const Admin_Revenue = () => {
         );
     });
 
+    const dateRef = useRef("");
+    const [err, setErr] = useState("");
+    const [income, setIncome] = useState(""); 
+
+    const CalIncome = async(e) => {
+        const token = localStorage.getItem("token");
+
+        const dateValue = dateRef.current.value;
+        const [year, month] = dateValue.split("-").map(Number); 
+
+        try {
+            const res = await axios.get(
+                "http://localhost:8080/manager/income",
+                {}, {
+                    params: {year: year, month: month},
+                    headers: {
+                        Authentication: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+            setIncome(res.data);
+        }
+        catch(err) {
+            setErr(err.message);
+        }
+    }
+
     return (
         <div>
             {/* Header */}
@@ -62,16 +91,20 @@ const Admin_Revenue = () => {
                         type="month"
                         className="revenue-input"
                         placeholder="Chọn tháng và năm"
+                        ref={dateRef}
                     />
                 </div>
                 <div className="right-summary">
                     
-                    <strong className="total-revenue">{totalRevenue.toLocaleString('vi-VN')} VNĐ</strong>
+                    <strong className="total-revenue">{income} VNĐ</strong>
                 </div>
             </div>
+            <button className="income-button">
+                Tính lợi nhuận
+            </button>
 
             {/* Bảng doanh thu */}
-            <div className="revenue-table-container">
+            {/* <div className="revenue-table-container">
                 <table id="revenue-table">
                     <thead>
                         <tr>
@@ -94,7 +127,7 @@ const Admin_Revenue = () => {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </div>
     );
 };

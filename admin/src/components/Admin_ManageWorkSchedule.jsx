@@ -37,7 +37,6 @@ const Admin_ManageWorkSchedule = () => {
                     }
                 )
                 setSchedule(res.data);
-                console.log(schedule);
             }
             catch(err) {
                 setErr(err.message || "Something went wrong!")
@@ -124,8 +123,8 @@ const Admin_ManageWorkSchedule = () => {
                                 <td>{item.shiftResponseDto.endTime}</td>
                                 <td>{item.id.shiftId}</td>
                                 {/* <td>{schedule.nameManager}</td> */}
-                                <td>{schedule.id.employeeId}</td>
-                                <td>{schedule.employeeName}</td>
+                                <td>{item.id.employeeId}</td>
+                                <td>{item.employeeName}</td>
                             </tr>
                         ))}
                     </tbody>
