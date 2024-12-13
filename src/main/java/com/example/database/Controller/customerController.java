@@ -57,9 +57,7 @@ public class customerController {
 
     @DeleteMapping("/delete")
     public void delCustomer(Principal principal){
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         customerService.delCustomerByUsername(principal.getName());
-        manager.deleteUser(principal.getName());
     }
     @PatchMapping("/updateInfo")
     public void updateCustomerInfo(Principal principal, @RequestBody customerUpdateDto dto) {

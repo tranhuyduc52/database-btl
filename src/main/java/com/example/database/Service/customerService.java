@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.database.Customer.customerDTO;
 import com.example.database.Customer.customerMapper;
@@ -46,10 +47,11 @@ public class customerService {
     public void createCustomer(customerDTO dto){
         repo.save(customerMapper.toCustomer(dto));
     }
+    @Transactional
     public void delCustomerByUsername(String phoneNumber){
-        repo.deleteByPhoneNumber(phoneNumber);
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         manager.deleteUser(phoneNumber);
+        repo.deleteByPhoneNumber(phoneNumber);
     }
     public void updateCustomerInfo(customerUpdateDto dto){
         repo.updateCustomerInfo(dto.dob(),dto.address(),dto.gender(),dto.name(),dto.phoneNumber());
