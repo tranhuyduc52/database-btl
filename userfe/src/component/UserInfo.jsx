@@ -69,6 +69,8 @@ function UserFormInfo() {
         }
     }
 
+    
+
     return (
         <>
             <form className='userInfo-form'>
@@ -153,6 +155,26 @@ function UserPersonalInfo({ toggle }) {
     const [userInfo, setuserInfo] = useState("");
     const [error, setError] = useState(null);
 
+    const deleteCus = async(e) => {
+        const token = localStorage.getItem("token");
+        console.log(token);
+        try {
+            const res = await axios.delete(
+                "http://localhost:8080/customer/delete",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+        }
+        catch(err) {
+            setError(err.message);
+        }
+        
+    }
+
     useEffect(() => {
         const fetchUserInfo = async(e) => {
             const token = localStorage.getItem("token");
@@ -214,6 +236,10 @@ function UserPersonalInfo({ toggle }) {
                 <button className="PersonalInfo-button"
                 onClick={toggle}>
                     Xem đơn hàng
+                </button>
+                <button className="PersonalInfo-button2"
+                onClick={deleteCus}>
+                    Xóa tài khoản
                 </button>
             </div>
         </>

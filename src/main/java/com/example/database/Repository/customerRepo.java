@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface customerRepo extends JpaRepository<customer,Integer>{
     public customer findByPhoneNumber(String phoneNumber);
-    @Transactional
+    //@Transactional
     public void deleteByPhoneNumber(String phoneNumber);
     @Transactional
     @Modifying
