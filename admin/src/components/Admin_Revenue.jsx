@@ -52,29 +52,33 @@ const Admin_Revenue = () => {
     const [err, setErr] = useState("");
     const [income, setIncome] = useState(""); 
 
-    const CalIncome = async(e) => {
+    const CalIncome = async (e) => {
         const token = localStorage.getItem("token");
 
+        if (!dateRef || !dateRef.current || !dateRef.current.value) {
+            alert("Vui lòng chọn tháng và năm!");
+            return;
+        }
+    
         const dateValue = dateRef.current.value;
         const [year, month] = dateValue.split("-").map(Number); 
 
         try {
             const res = await axios.get(
                 "http://localhost:8080/manager/income",
-                {}, {
-                    params: {year: year, month: month},
+                {
+                    params: { year, month }, // Truyền params đúng cách
                     headers: {
-                        Authentication: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, // Sửa đúng header
                         "Content-Type": "application/json",
-                    }
+                    },
                 }
-            )
-            setIncome(res.data);
+            );
+            setIncome(res.data); // Lưu kết quả vào state
+        } catch (err) {
+            setErr(err.message); // Xử lý lỗi
         }
-        catch(err) {
-            setErr(err.message);
-        }
-    }
+    };
 
     return (
         <div>
@@ -99,7 +103,7 @@ const Admin_Revenue = () => {
                     <strong className="total-revenue">{income} VNĐ</strong>
                 </div>
             </div>
-            <button className="income-button">
+            <button className="income-button" onClick={CalIncome}>
                 Tính lợi nhuận
             </button>
 

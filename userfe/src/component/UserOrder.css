@@ -29,7 +29,7 @@
 .userOrder-box {
     display: flex;
     flex-direction: row;
-    height: 400px;
+    height: 300px;
     width: 800px;
     border-radius: 10px;
     background-color: #f1f4f1;

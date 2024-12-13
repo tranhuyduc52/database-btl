@@ -73,7 +73,7 @@ function UserOrder() {
                                 </ul>
                             </div>
                             <div className="userOrder-rightBox">
-                                {prodList.map((item, index) => (
+                                {item.producList.map((item, index) => (
                                     <ul className="userOrder-right-ul"
                                     key={index}>
                                         <li className="userOrder-right-li">

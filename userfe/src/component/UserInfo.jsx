@@ -31,7 +31,7 @@ function UserFormInfo() {
         const dob = dobRef.current.value;
         const gender = document.querySelector('input[name="gender"]:checked');
 
-        if (!name || !address || !phone || !dob || !gender) {
+        if (!name || !address || !dob || !gender) {
             alert("Vui lòng điền đầy đủ thông tin trước khi gửi!");
             return;
         }
@@ -41,8 +41,9 @@ function UserFormInfo() {
 
         const userName = nameRef.current.value;
         const userAddress = addressRef.current.value;
-        const userPhone = phoneRef.current.value;
+        const userPhone = localStorage.getItem("phone");
         const userDoB = dobRef.current.value;
+        console.log(userPhone);
 
         const user = {
             dob:userDoB, 
@@ -106,7 +107,8 @@ function UserFormInfo() {
                         <input type="text" className="userInfo-form-input" 
                         id='userPhone'
                         placeholder='Nhập số điện thoại'
-                        ref={phoneRef}/>
+                        ref={phoneRef}
+                        disabled/>
                     </li>
                     <li className="userInfo-form-li">
                         <label htmlFor="userDoB" className="userInfo-form-label">
@@ -151,6 +153,8 @@ function UserFormInfo() {
     );
 }
 
+
+
 function UserPersonalInfo({ toggle }) {
     const [userInfo, setuserInfo] = useState("");
     const [error, setError] = useState(null);
@@ -191,6 +195,7 @@ function UserPersonalInfo({ toggle }) {
                     },
                 )
                 setuserInfo(res.data);
+                localStorage.setItem("phone", res.data.phoneNumber);
             } catch(err) {
                 setError(err.message || "Something went wrong!")
             }
