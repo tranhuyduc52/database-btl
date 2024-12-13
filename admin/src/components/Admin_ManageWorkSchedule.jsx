@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Admin_Header from './Admin_Header'; 
-import "../assets/css/Admin_ManageWorkSchedule.css";
+import "../assets/css/Admin_ManageWorkSchedule.css"; 
 import axios from 'axios';
 
 const Admin_ManageWorkSchedule = () => {
+    const navigate = useNavigate(); // Initialize navigate
     const [workScheduleData, setWorkScheduleData] = useState([]);
     const [filters, setFilters] = useState({
         date: '',
@@ -16,14 +18,14 @@ const Admin_ManageWorkSchedule = () => {
         nameEmployee: '',
     });
 
-    const [err, setErr] = useState("");
     const [schedule, setSchedule] = useState([]);
+    const [err, setErr] = useState("");
 
     // Giả lập API lấy dữ liệu lịch làm việc
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        const fetchSchedule = async(e) => {
+        const GetSchedule = async(e) => {
             try {
                 const res = await axios.get(
                     "http://localhost:8080/manager/view/schedule",
@@ -44,11 +46,10 @@ const Admin_ManageWorkSchedule = () => {
         const data = [
             { date: "03/12/2024", shift: "1", start: "7:30", end: "12:00", idManager: "MGR01", nameManager: "Phạm Thị B", idEmployee: "EMP001", nameEmployee: "Trần Văn C" },
             { date: "04/12/2024", shift: "2", start: "8:00", end: "13:00", idManager: "MGR02", nameManager: "Nguyễn Văn A", idEmployee: "EMP002", nameEmployee: "Nguyễn Văn B" },
-            { date: "03/12/2024", shift: "1", start: "7:30", end: "12:00", idManager: "MGR01", nameManager: "Phạm Thị B", idEmployee: "EMP001", nameEmployee: "Trần Văn C" },
         ];
         setWorkScheduleData(data);
 
-        fetchSchedule();
+        GetSchedule();
     }, []);
 
     // Hàm lọc dữ liệu
@@ -70,23 +71,32 @@ const Admin_ManageWorkSchedule = () => {
         );
     });
 
+
+    const handleCreateWorkSchedule = () => {
+        navigate('/admin/manage-work-schedule/edit'); 
+    };
+
     return (
         <div>
-            {/* Header */}
             <Admin_Header />
 
             {/* Nội dung chính */}
-            <h2 className="schedule-title">LỊCH LÀM VIỆC</h2>
+            <div className="schedule-title-container">
+                <h2 className="schedule-title">LỊCH LÀM VIỆC</h2>
+                <button className="create-schedule-button" onClick={handleCreateWorkSchedule}>
+                    Tạo lịch làm việc
+                </button>
+            </div>
 
             <div className="table-container">
                 <table id="work-schedule-table">
                     <thead>
                         <tr>
                             <th>Ngày</th>
-                            {/* <th>Ca làm</th> */}
+                            <th>Ca làm</th>
                             <th>Bắt đầu</th>
                             <th>Kết thúc</th>
-                            <th>ID Ca làm việc</th>
+                            <th>ID Ca làm</th>
                             {/* <th>Tên Quản lý</th> */}
                             <th>ID Nhân viên</th>
                             <th>Tên Nhân viên</th>
@@ -95,7 +105,7 @@ const Admin_ManageWorkSchedule = () => {
                     <tbody className="filter-row">
                         <tr>
                             <td><input type="text" id="date" className="filter-input" placeholder="Lọc theo ngày" onChange={handleFilterChange} /></td>
-                            {/* <td><input type="text" id="shift" className="filter-input" placeholder="Lọc theo ca" onChange={handleFilterChange} /></td> */}
+                            <td><input type="text" id="shift" className="filter-input" placeholder="Lọc theo ca" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="start" className="filter-input" placeholder="Lọc theo giờ bắt đầu" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="end" className="filter-input" placeholder="Lọc theo giờ kết thúc" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="idManager" className="filter-input" placeholder="Lọc theo ID quản lý" onChange={handleFilterChange} /></td>
@@ -108,7 +118,7 @@ const Admin_ManageWorkSchedule = () => {
                         {schedule.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.date}</td>
-                                {/* <td>{schedule.shift}</td> */}
+                                <td>{item.shift}</td>
                                 <td>{item.shiftResponseDto.startTime}</td>
                                 <td>{item.shiftResponseDto.endTime}</td>
                                 <td>{item.id.shiftId}</td>

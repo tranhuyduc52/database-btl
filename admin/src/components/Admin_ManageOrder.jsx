@@ -16,8 +16,31 @@ const Admin_ManageOrder = () => {
 
     const [sortOrder, setSortOrder] = useState(1); // 1: ASC, -1: DESC
 
+    const [err, setErr] = useState("");
+    const [order, setOrd] = useState([]);
+
     // Giả lập API lấy dữ liệu đơn hàng
     useEffect(() => {
+        const getOrder = async(e) => {
+            const token = localStorage.getItem("token");
+
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/manager/view/order",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content Type": "application/json",
+                        }
+                    }
+                )
+                setOrd(res.data);
+            }
+            catch(err) {
+                setErr(err.message);
+            }
+        }
+
         const data = [
             { id: "001", date: "15:00 - 01/12/2024", employee: "Nguyễn Văn A", customer: "Khách hàng 1", orderList: "Phindi cafe x1 47.000đ, Trà sen vàng x1 46.000đ", total: "93.000 VNĐ", payment: "Tiền mặt" },
             { id: "002", date: "16:00 - 02/12/2024", employee: "Nguyễn Thị B", customer: "Khách hàng 2", orderList: "Trà xanh x1 40.000đ, Phindi choco x1 47.000đ", total: "87.000 VNĐ", payment: "Thẻ ngân hàng" },
@@ -26,6 +49,8 @@ const Admin_ManageOrder = () => {
             { id: "005", date: "19:00 - 05/12/2024", employee: "Lê Minh E", customer: "Khách hàng 5", orderList: "Phindi choco x1 47.000đ, Trà sen vàng x1 45.000đ", total: "92.000 VNĐ", payment: "Tiền mặt" },
         ];
         setOrderData(data);
+
+        getOrder();
     }, []);
 
     // Lọc dữ liệu
@@ -81,7 +106,7 @@ const Admin_ManageOrder = () => {
                                     <i className="fa fa-sort"></i>
                                 </span>
                             </th>
-                            <th>Phương thức thanh toán</th>
+                            {/* <th>Phương thức thanh toán</th> */}
                         </tr>
                     </thead>
                     <tbody className="filter-row">
@@ -92,19 +117,27 @@ const Admin_ManageOrder = () => {
                             <td><input type="text" id="customer" className="filter-input" placeholder="Lọc theo khách hàng" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="orderList" className="filter-input" placeholder="Lọc theo danh sách đơn" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="total" className="filter-input" placeholder="Lọc theo tổng tiền" onChange={handleFilterChange} /></td>
-                            <td><input type="text" id="payment" className="filter-input" placeholder="Lọc theo phương thức thanh toán" onChange={handleFilterChange} /></td>
+                            {/* <td><input type="text" id="payment" className="filter-input" placeholder="Lọc theo phương thức thanh toán" onChange={handleFilterChange} /></td> */}
                         </tr>
                     </tbody>
                     <tbody id="order-data">
-                        {filteredData.map((order, index) => (
+                        {order.map((order, index) => (
                             <tr key={index}>
                                 <td>{order.id}</td>
-                                <td>{order.date}</td>
-                                <td>{order.employee}</td>
-                                <td>{order.customer}</td>
-                                <td>{order.orderList}</td>
-                                <td>{order.total}</td>
-                                <td>{order.payment}</td>
+                                <td>{order.order_time}</td>
+                                <td>{order.employeeName}</td>
+                                <td>{order.customerName}</td>
+                                <td>
+                                    {order.producList.map((item, idx) => (
+                                        <>
+                                            {item.productResponseDto.name}, {item.productResponseDto.unit_price},
+                                            {item.productResponseDto.discount}, {item.productResponseDto.rating},
+                                            {item.productResponseDto.description}, {item.productResponseDto.id}
+                                        </>
+                                    ))}
+                                </td>
+                                <td>{order.total_charge}</td>
+                                {/* <td>{order.payment}</td> */}
                             </tr>
                         ))}
                     </tbody>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Emp_Header from "./Emp_Header"; 
 import "../assets/css/Emp_OrderForm.css"; 
+import axios from "axios";
 
 import traSenVangImage from "../assets/img/tra-sen-vang.svg";
 import phindiChocoImage from "../assets/img/phindi.svg";
@@ -9,6 +10,7 @@ import freezeTraxanhImage from "../assets/img/FREEZE-TRA-XANH.jpg";
 import freezeChocoImage from "../assets/img/FREEZE-CHOCO.jpg";
 import traThachDaoImage from "../assets/img/TRA_THANH_DAO.jpg";
 import traThachVaiImage from "../assets/img/TRA_TACH_VAI.jpg";
+import { useRef } from "react";
 
 // Hàm định dạng giá tiền
 const formatPrice = (price) => {
@@ -46,25 +48,23 @@ const Emp_OrderForm = () => {
     { id: "007", name: "Trà thanh vải", price: 40000, image: traThachVaiImage },
   ];
 
-  // Thêm món vào giỏ hàng
-  const addProductToOrder = (product) => {
-    const existingProduct = orderDetails.find(item => item.id === product.id);
-    if (existingProduct) {
-      // Nếu sản phẩm đã có trong đơn hàng, tăng số lượng
-      setOrderDetails(orderDetails.map(item =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
-    } else {
-      // Nếu sản phẩm chưa có, thêm mới vào đơn hàng
-      setOrderDetails([...orderDetails, { ...product, quantity: 1 }]);
-    }
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
-    // Thông báo "Đã thêm sản phẩm"
-    setNotification("Đã thêm sản phẩm");
-    setTimeout(() => setNotification(""), 1000); // Ẩn thông báo sau 1s
-  };
+  const addProductToOrder = (product) => {
+    setSelectedProducts((prevProducts) => {
+        const updatedProducts = prevProducts.map((item) =>
+            item.productId === product.id
+                ? { ...item, quantity: item.quantity + 1 } // Tạo object mới
+                : item
+        );
+
+        if (!updatedProducts.some((item) => item.productId === product.id)) {
+            updatedProducts.push({ productId: product.id, quantity: 1 }); // Thêm sản phẩm mới
+        }
+
+        return updatedProducts;
+    });
+  };  
 
   // Cập nhật số lượng món
   const updateQuantity = (id, action) => {
@@ -115,45 +115,135 @@ const Emp_OrderForm = () => {
 
   const { totalAfterDiscount, pointsEarned, discountAmount } = calculateTotal();
 
+  const [err, setErr] = useState("");
+  const [ord, setOrd] = useState([]);
+
+  useEffect(() => {
+    const getOrder = async(e) => {
+      try {
+        const token = await axios.get(
+          "http://localhost:8080/public/menu",
+          {
+            headers: {
+              "Content-Type": "application/json",
+            }
+          }
+        )
+        setOrd(token.data);
+      }
+      catch(err) {
+        setErr(err.message);
+      }
+    }
+
+    getOrder();
+  }, []);
+
+  const chunkArray = (arr, chunkSize) => {
+    const chunks = [];
+
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  const orderChunks = chunkArray(ord, 5);
+  const phoneRef = useRef("");
+
+  const createOrder = async(e) => {
+    e.preventDefault();
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const dateString = `${year}-${month}-${day}`;
+    const phone = phoneRef.current.value;
+    
+    if (!phone || phone.trim() === "") {
+      alert("Vui lòng nhập số điện thoại khách hàng.");
+      return;
+    }
+    if (!selectedProducts || selectedProducts.length === 0) {
+      alert("Vui lòng chọn ít nhất một sản phẩm.");
+      return;
+    }
+
+    const order = {
+      order_time: dateString,
+      customerPhoneNumber: phone,
+      producList: selectedProducts
+    }
+    const token = localStorage.getItem("token");
+    console.log(order);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/employee/order/create",
+        order, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          }
+        }
+      )
+    }
+    catch(err) {
+      setErr(err.message);
+    }
+    setSelectedProducts([]);
+  }
+
   return (
     <div>
       <Emp_Header /> {/* Header */}
       <main className="orderform-main-content">
         <div className="menu">
-          {mockProductData.map((product) => (
-            <div className="item" key={product.id} onClick={() => addProductToOrder(product)}>
-              <a href="#" className="product-link">
-                <img src={product.image} alt={product.name} className="product-image" />
-              </a>
-              <p>{product.name}</p>
-              <p>{formatPrice(product.price)}</p>
+          {orderChunks.map((chunk, rowIndex) => (
+            <div className="inMenu" key={rowIndex}>
+              {chunk.map((product, index) => (
+                <div className="item" key={index} onClick={() => addProductToOrder(product)}>
+                  <a href="#" className="product-link">
+                    <img src={traSenVangImage} alt={product.name} className="product-image" />
+                  </a>
+                  <p>{product.name}</p>
+                  <p>{formatPrice(product.unit_price)}</p>
+                </div>
+              ))}
             </div>
           ))}
         </div>
         <div className="order">
           <h2>Đơn hàng</h2>
           <div className="order-details" id="order-details">
-            <p>ID: 031224</p>
             <p>Khách hàng: 
               <input 
                 type="text" 
-                value={customerId} 
-                onChange={(e) => setCustomerId(e.target.value)} 
                 placeholder="Nhập ID khách hàng" 
+                ref={phoneRef}
               />
             </p>
-            {orderDetails.map((item) => (
-              <div className="order-item" key={item.id}>
-                <span>{item.name}</span>
-                <div className="quantity-control">
-                  <span onClick={() => updateQuantity(item.id, "decrease")}>-</span>
-                  <span>{item.quantity}</span>
-                  <span onClick={() => updateQuantity(item.id, "increase")}>+</span>
+            {selectedProducts.map((selectedItem, index) => {
+              // Tìm sản phẩm trong mảng 'ord' có id trùng với selectedItem.id
+              const ordItem = ord.find((item) => item.id === selectedItem.productId);
+
+              // Nếu không tìm thấy sản phẩm trong 'ord', bỏ qua phần tử này
+              if (!ordItem) return null;
+
+              return (
+                <div className="order-item" key={index}>
+                  <span>{ordItem.name}</span>
+                  <div className="quantity-control">
+                    <span onClick={() => updateQuantity(selectedItem.productId, "decrease")}>-</span>
+                    <span>{selectedItem.quantity}</span>
+                    <span onClick={() => updateQuantity(selectedItem.productId, "increase")}>+</span>
+                  </div>
+                  <span>{formatPrice(ordItem.unit_price * selectedItem.quantity)}</span>
                 </div>
-                <span>{formatPrice(item.price * item.quantity)}</span>
-              </div>
-            ))}
-            <div className="summary">
+              );
+            })}
+            {/* <div className="summary">
               <p>Điểm sử dụng: 
                 <input 
                   type="number" 
@@ -165,8 +255,8 @@ const Emp_OrderForm = () => {
               <p>Voucher giảm giá: {discountAmount}%</p>
               <p>Tích điểm: {pointsEarned}</p>
               <p><strong>Tổng: {formatPrice(totalAfterDiscount)}</strong></p>
-            </div>
-            <button id="confirm-order" onClick={handleConfirmOrder}>Xác nhận</button>
+            </div> */}
+            <button id="confirm-order" onClick={createOrder}>Xác nhận</button>
           </div>
         </div>
       </main>

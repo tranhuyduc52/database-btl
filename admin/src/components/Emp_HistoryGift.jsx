@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Emp_Header from "./Emp_Header"; 
 import "../assets/css/Emp_HistoryGift.css"; 
+import axios from "axios";
 
 const Emp_HistoryGift = () => {
     const [historyData, setHistoryData] = useState([]);
@@ -16,6 +17,32 @@ const Emp_HistoryGift = () => {
         setTimeout(() => setHistoryData(mockData), 500); // Giả lập delay API
     }, []);
 
+    const [err, setErr] = useState("");
+    const [exchange, setExchange] = useState([]);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const getExchange = async(e) => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/employee/view/exchange",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        }
+                    }
+                )
+                setExchange(res.data);
+            }
+            catch(err) {
+                console.log(err.message);
+            }
+        }
+        
+    })
+
     return (
         <div>
             <Emp_Header /> {/* Header */}
@@ -24,21 +51,19 @@ const Emp_HistoryGift = () => {
                 <table className="history-table">
                     <thead>
                         <tr>
-                            <th>Mã Khách hàng</th>
-                            <th>Mã Hóa đơn</th>
+                            <th>Tên khách hàng</th>
                             <th>Ngày</th>
-                            <th>Điểm sử dụng</th>
-                            <th>Voucher</th>
+                            <th>Số lượng</th>
+                            <th>Tên quà</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {historyData.map((item, index) => (
+                        {exchange.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.customerId}</td>
-                                <td>{item.invoiceId}</td>
+                                <td>{item.customerName}</td>
                                 <td>{item.date}</td>
-                                <td>{item.pointsUsed}</td>
-                                <td>{item.voucher}</td>
+                                <td>{item.quantity}</td>
+                                <td>{item.giftName}</td>
                             </tr>
                         ))}
                     </tbody>

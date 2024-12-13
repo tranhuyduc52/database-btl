@@ -118,7 +118,7 @@ public class managerController {
     }
     @DeleteMapping("/delete/employee")
     public void delEmployee(@RequestParam int id){
-        employeeService.delEmployee(id);
+         employeeService.delEmployee(id);
     }
     @GetMapping("/view/orders")
     public List<orderResponseDto> getOrders() {
@@ -126,14 +126,14 @@ public class managerController {
     }
     
     @PatchMapping("/delete/gift")
-    public void delGift(int id) {
+    public void delGift(@RequestParam int id) {
         //TODO: process PUT request
         giftService.hideGift(id);
     }
     @PatchMapping("/delete/product")
-    public void delProduct(int id) {
+    public void delProduct( @RequestParam int id) {
         //TODO: process PUT request
-        productService.hideProduct(id);;
+        productService.hideProduct(id);
     }
     @PatchMapping("/update/product")
     public void updateProduct(@RequestBody productUpdateDto dto) {

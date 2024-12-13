@@ -106,8 +106,21 @@
     left: 50%;
     transform: translateX(-50%);
 }
-.PersonalInfo-button:hover {
+.PersonalInfo-button:hover, .PersonalInfo-button2:hover {
     cursor: pointer;
     background-color: #029b8c;
     transition: all 0.2s ease;
+}
+.PersonalInfo-button2 {
+    height: 40px;
+    width: 140px;
+    border: none;
+    border-radius: 10px;
+    position: absolute;
+    right: 10px;
+    bottom: 30px;
+    background-color: #025048;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
 }

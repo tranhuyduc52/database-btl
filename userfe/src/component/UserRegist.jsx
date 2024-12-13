@@ -128,9 +128,10 @@ function UserLoginInterface({ toggle }) {
             );
             setResponse(res.data);
 
-            setToken(res.data.jwtToken);
-            localStorage.setItem("token", token);
-            console.log(token);
+            const jwtToken = res.data.jwtToken;
+            setToken(jwtToken);
+            localStorage.setItem("token", jwtToken);
+            console.log(jwtToken);
             setError(null); // Reset lỗi nếu có
         } catch (err) {
             setError(err.message || "Something went wrong");

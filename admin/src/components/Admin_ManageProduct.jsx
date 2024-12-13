@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Admin_Header from './Admin_Header'; 
-import "../assets/css/Admin_ManageProduct.css";
+import "../assets/css/Admin_ManageProduct.css"; 
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 
 const Admin_ManageProduct = () => {
@@ -14,22 +15,31 @@ const Admin_ManageProduct = () => {
         discount: '',
     });
 
-    // Giả lập API để lấy dữ liệu sản phẩm
+    const navigate = useNavigate(); 
+    const [prod, setProd] = useState([]);
     const [err, setErr] = useState("");
-    const [product, setProduct] =useState("");
 
-
+    // Giả lập API để lấy dữ liệu sản phẩm
     useEffect(() => {
-        const fetchProduct = async(e) => {
-            const token = localStorage.getItem("token");
-
+        const getProduct = async(e) => {
             try {
-                
+                const res = await axios.get(
+                    "http://localhost:8080/public/menu",
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    }
+                )
+                setProd(res.data);
+                console.log(res.data);
             }
             catch(err) {
-                setErr(err.message || "Something went wrong!")
+                setErr(err.message);
             }
         }
+
+        getProduct();
 
         const data = [
             { id: "001", name: "Phindi cafe", rating: "4.8", description: "#N/A", price: "47,000 VNĐ", discount: "0%" },
@@ -58,6 +68,10 @@ const Admin_ManageProduct = () => {
         );
     });
 
+    const handleEditProductClick = () => {
+        navigate("/admin/manage-product/edit");
+    };
+
     return (
         <div>
             {/* Header */}
@@ -65,6 +79,9 @@ const Admin_ManageProduct = () => {
 
             {/* Nội dung chính */}
             <h2 className="product-title">QUẢN LÝ SẢN PHẨM</h2>
+
+            {/* Nút Thông tin quà & sản phẩm */}
+            <button className="edit-product-button" onClick={handleEditProductClick}>Thông tin quà & sản phẩm</button>
 
             {/* Bảng sản phẩm */}
             <div className="product-table-container">
@@ -90,13 +107,13 @@ const Admin_ManageProduct = () => {
                         </tr>
                     </tbody>
                     <tbody id="product-data">
-                        {filteredData.map((product, index) => (
+                        {prod.map((product, index) => (
                             <tr key={index}>
                                 <td>{product.id}</td>
                                 <td>{product.name}</td>
                                 <td>{product.rating}</td>
                                 <td>{product.description}</td>
-                                <td>{product.price}</td>
+                                <td>{product.unit_price}</td>
                                 <td>{product.discount}</td>
                             </tr>
                         ))}
