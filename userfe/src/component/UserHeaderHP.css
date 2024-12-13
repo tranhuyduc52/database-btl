@@ -43,7 +43,7 @@
     justify-content: center;
 }
 
-.list-nav-header-homepage li a {
+.list-nav-header-homepage a, .list-nav-header-homepage li button {
     font-size: 20px;
     color: #fff;
     line-height: 100px;
@@ -52,6 +52,13 @@
     box-sizing: unset;
     padding: 0 20px;
     text-decoration: none;
+    display: flex;
+}
+
+.list-nav-header-homepage li button {
+    background-color: #025048;
+    border: none;
+    font-weight: lighter;
 }
 
 .sub-nav-header-homepage-contain-avt {

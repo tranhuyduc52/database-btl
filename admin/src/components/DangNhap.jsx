@@ -5,7 +5,7 @@ import CoffeeShopImage from "../assets/img/CoffeeShop.jpg";
 import axios from 'axios'; 
 
 
-const DangNhap = () => {
+const DangNhap = ({ onLog }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -55,7 +55,15 @@ const DangNhap = () => {
             )
 
             localStorage.setItem("token", res.data.jwtToken);
-            console.log(res.data.jwtToken);
+            localStorage.setItem("roles", res.data.roles[0]);
+            console.log(res.data.roles[0]);
+            onLog();
+
+            if (res.data.roles[0] === "ROLE_EMPLOYEE") {
+                navigate("/employee");
+            } else if (res.data.roles[0] === "ROLE_MANAGER") {
+                navigate("/admin");
+            }
         }
         catch (err) {
             setErrorMessage(err.message || "Something went wrong!")
