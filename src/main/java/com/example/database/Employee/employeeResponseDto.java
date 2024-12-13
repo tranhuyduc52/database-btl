@@ -10,7 +10,7 @@ public record employeeResponseDto(
     String phoneNumber,
     Date startDate,
     String position,
-    int unitSalary
+    int totalSalary
 ) {
     
 }

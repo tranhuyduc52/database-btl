@@ -15,7 +15,11 @@ function UserFeedBack({toggleVisibility, response, proID}) {
     };
 
     const FeedBackRef = useRef();
-    const scoreRef = useRef();
+    const [selectedRating, setSelectedRating] = useState(null);
+
+    const handleRatingChange = (event) => {
+        setSelectedRating(Number(event.target.value)); 
+    };
 
     const [err, setErr] = useState("");
     const [token, setToken] = useState("");
@@ -31,7 +35,7 @@ function UserFeedBack({toggleVisibility, response, proID}) {
 
     const SendFeedBack = async(token) => {
         const comment = FeedBackRef.current.value;
-        const score = 4;
+        const score = selectedRating;
         const date = getCurrentDate();
         const productId = proID;
 
@@ -93,14 +97,15 @@ function UserFeedBack({toggleVisibility, response, proID}) {
                             <div className="userFB-middle-right-box">
                                 <p>Đánh giá</p>
                                 <div className="star-rating">
-                                    {[1, 2, 3, 4, 5].map((star) => (
+                                    {[5, 4, 3, 2, 1].map((star) => (
                                         <label key={star} className="star-label">
                                             <input
                                                 type="radio"
                                                 name="rating"
                                                 value={star}
                                                 className="star-input"
-                                                ref={scoreRef}
+                                                onChange={handleRatingChange}
+                                                checked={selectedRating === star}
                                             />
                                             {star}
                                             <span>&#9733;</span>

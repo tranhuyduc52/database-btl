@@ -39,7 +39,7 @@ const Admin_ManageEmployee = () => {
                     }
                 )
                 setEmp(res.data);
-                console.log(emp);
+                console.log(res.data);
             }
             catch(err) {
                 setErr(err.message || "Something went wrong!")
@@ -74,6 +74,41 @@ const Admin_ManageEmployee = () => {
             setUpdateMessage(""); // Ẩn thông báo sau 3 giây
         }, 5000);
     };
+
+    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+
+    const handleRadioChange = (id) => {
+        setSelectedEmployeeId(id);
+    };
+
+    const calSalary = async(e) => {
+        const token = localStorage.getItem("token");
+
+        const currentDate = new Date();
+        const month = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+
+        const updateSal = {
+            id: selectedEmployeeId,
+            month: month,
+            year: year,
+        }
+        console.log(updateSal);
+        try {
+            const res = await axios.patch(
+                "http://localhost:8080/manager/update/employee/salary",
+                updateSal, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+        }
+        catch(err) {
+            setErr(err.message);
+        }
+    }
 
     // Hàm định dạng tổng lương
     const formatSalary = (salary) => {
@@ -127,6 +162,7 @@ const Admin_ManageEmployee = () => {
                             <th>Vị trí</th>
                             {/* <th>Hệ số lương</th> */}
                             <th>Tổng lương</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody className="filter-row">
@@ -141,7 +177,8 @@ const Admin_ManageEmployee = () => {
                             <td><input type="text" id="startDate" className="filter-input" placeholder="Lọc theo ngày bắt đầu" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="position" className="filter-input" placeholder="Lọc theo vị trí" onChange={handleFilterChange} /></td>
                             {/* <td></td> */}
-                            <td><button className="button-salary-update" onClick={handleUpdateClick}>Cập nhật</button></td>
+                            <td><button className="button-salary-update" onClick={calSalary}>Cập nhật</button></td>
+                            <td></td>
                         </tr>
                     </tbody>
                     <tbody id="employee-data">
@@ -157,7 +194,11 @@ const Admin_ManageEmployee = () => {
                                 <td>{employee.startDate}</td>
                                 <td>{employee.position}</td>
                                 {/* <td>{employee.salaryCoefficient}</td> */}
-                                <td>{formatSalary(employee.unitSalary)}</td>
+                                <td>{formatSalary(employee.totalSalary)}</td>
+                                <td><input type="radio" name='salary'
+                                value={employee.id}
+                                checked={selectedEmployeeId === employee.id}
+                                onChange={() => handleRadioChange(employee.id)}/></td>
                             </tr>
                         ))}
                     </tbody>
