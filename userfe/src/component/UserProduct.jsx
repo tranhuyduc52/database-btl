@@ -43,7 +43,7 @@ function UserDetailProduct({ toggle, toggleVisibility, response, toggleFeedBack}
                                     Đánh giá sản phẩm
                                 </p>
                                 <div className="detail-product-middle-right-rate">
-                                    5 trên 5
+                                    {localStorage.getItem("rating")} trên 5
                                 </div>
                             </div>
                             <ul className="detail-product-middle-right-ul">
@@ -170,10 +170,12 @@ function UserProduct() {
     const [proID, setProID] = useState("");
 
     const proIdRef = useRef("");
+    const [rate, setRate] = useState(null);
 
-    const handleProductClick = async(product, productId) => {
+    const handleProductClick = async(product, productId, prodRate) => {
         toggleDetail(product);
         fetchReview(productId);
+        localStorage.setItem("rating", prodRate);
         proIdRef.current = productId;
     }
 
@@ -247,9 +249,9 @@ function UserProduct() {
                                             <td key={index} className='most-popular-table-cl1'>
                                                 <img src={require(`../img/270_crop_Phindi_Cassia_Highlands_products_Image1.jpg`)} 
                                                 alt="" 
-                                                onClick={() => handleProductClick(product, product.id)}/>
+                                                onClick={() => handleProductClick(product, product.id, product.rating)}/>
                                                 <p className="most-popular-table-name-product"
-                                                onClick={() => handleProductClick(product, product.id)}>
+                                                onClick={() => handleProductClick(product, product.id, product.rating)}>
                                                     {product.name}
                                                 </p>
                                                 <p className="most-popular-table-price">
