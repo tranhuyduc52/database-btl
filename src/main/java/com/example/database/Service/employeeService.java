@@ -39,8 +39,7 @@ public class employeeService {
     @Transactional
     public void delEmployee(int id){
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        var employee = repo.findById(id).orElse(null);
-        manager.deleteUser(employee.getPhoneNumber());
+        manager.deleteUser(repo.findById(id).orElse(null).getPhoneNumber());
         repo.deleteById(id);
     }
     public void updateEmployee(employeeUpdateDto dto){
