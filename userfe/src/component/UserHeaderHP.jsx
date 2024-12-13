@@ -1,8 +1,18 @@
 import './UserHeaderHP.css'
 import React, { Component }  from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function HeaderHomePage() {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("roles");
+        navigate('/login');
+        const token = localStorage.getItem("token");
+        console.log(token);
+    };
+
     return (
         <>
             <div className="header-homepage">
@@ -14,22 +24,22 @@ function HeaderHomePage() {
                         <div className="sub-nav-header-homepage sub-nav-header-homepage2">
                             <ul className="list-nav-header-homepage">
                                 <li>
-                                    <Link to="/">Giới thiệu</Link>
+                                    <Link to="/customer">Giới thiệu</Link>
                                 </li>
                                 <li>
-                                    <Link to="/product">Sản phẩm</Link>
+                                    <Link to="/customer/product">Sản phẩm</Link>
                                 </li>
                                 <li>
-                                    <Link to="/exchange">Đổi quà</Link>
+                                    <Link to="/customer/exchange">Đổi quà</Link>
                                 </li>
                                 <li>
-                                    <Link to=''>Đăng xuất</Link>
+                                    <button onClick={handleLogout}>Đăng xuất</button>
                                 </li>
                             </ul>
                         </div>
                         <div className="sub-nav-header-homepage">
                             <div className="sub-nav-header-homepage-contain-avt">
-                                <Link to="/info">
+                                <Link to="/customer/info">
                                     <img src={require(`../img/Avatar.png`)} alt=""/>
                                 </Link>
                                 <svg xmlns="http://www.w3.org/2000/svg" 

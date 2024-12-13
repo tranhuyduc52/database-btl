@@ -96,7 +96,7 @@ function UserRegistInterface({ toggle }) {
     );
 }
 
-function UserLoginInterface({ toggle, onLog }) {
+function UserLoginInterface({ toggle }) {
     const usernameRef = useRef();
     const passwordRef = useRef();
 
@@ -132,7 +132,7 @@ function UserLoginInterface({ toggle, onLog }) {
             setToken(jwtToken);
             localStorage.setItem("token", res.data.jwtToken);
             localStorage.setItem("roles", res.data.roles[0]);
-            onLog();
+            const token = localStorage.getItem("token");
             if (res.data.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/customer");
             }

@@ -5,15 +5,10 @@ import UserInfo from './component/UserInfo';
 import UserProduct from './component/UserProduct';
 import UserRegist from './component/UserRegist';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate
+  ,useNavigate
+ } from 'react-router-dom';
 
-function UserLogin({ onLogin }) {
-  return (
-    <Routes>
-      <Route path="*" element={<UserRegist onLog={onLogin}/>} />
-    </Routes>
-  );
-};
 
 function UserHomePage() {
   return (
@@ -50,28 +45,32 @@ function UserInfoPage() {
   );
 }
 
-function HomePage({ onLogout }) {
+function UserLogin() {
+  return(
+    <Routes>
+      <Route path="*" element={<UserRegist/>} />
+    </Routes>
+  );
+};
+
+function HomePage() {
   return (
       <Routes>
-        <Route path='/' element={<UserHomePage/>}/>
-        <Route path='/product' element={<UserProductPage/>}/>
-        <Route path='/exchange' element={<UserExchangePage/>}/>
-        <Route path='/info' element={<UserInfoPage/>}/>
+        <Route path='/customer' element={<UserHomePage/>}/>
+        <Route path='/customer/product' element={<UserProductPage/>}/>
+        <Route path='/customer/exchange' element={<UserExchangePage/>}/>
+        <Route path='/customer/info' element={<UserInfoPage/>}/>
+
+        <Route path="*" element={<Navigate to="/customer" replace />} />
       </Routes>
   );
 }
 
 
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [roles, setRoles] = useState(localStorage.getItem("roles"));
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("roles");
-    setToken(null);
-    setRoles(null);
-  };
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -87,12 +86,11 @@ function App() {
           setToken(localStorage.getItem("token"));
           setRoles(localStorage.getItem("roles"));
         }} />} />
+        {token && roles === "ROLE_CUSTOMER" && (
+          <Route path="/*" element={<HomePage />} />
+        )}
+        {!token && <Route path="*" element={<Navigate to="/login" replace />} />}
       </Routes>
-      {token && roles === "ROLE_CUSTOMER" && (
-        <Route path="/*" element={<HomePage onLogout={handleLogout}/>} />
-      )}
-
-      {!token && <Route path="*" element={<Navigate to="/login" replace />} />}
     </Router>
   );
 }
