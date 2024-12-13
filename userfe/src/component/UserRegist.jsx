@@ -127,7 +127,6 @@ function UserLoginInterface({ toggle }) {
                 }
             );
             setResponse(res.data);
-
             const jwtToken = res.data.jwtToken;
             setToken(jwtToken);
             localStorage.setItem("token", jwtToken);
