@@ -27,8 +27,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String url;
         for(var i: listRole){
             if(i.getAuthority()=="ROLE_CUSTOMER") url=""; //homepage of customer
-            if(i.getAuthority()=="ROLE_EMPLOYEE") url="";
-            if(i.getAuthority()=="ROLE_MANAGER") url="";
+            if(i.getAuthority()=="ROLE_EMPLOYEE") url="http://localhost:5173/emp/order-form";
+            if(i.getAuthority()=="ROLE_MANAGER") url="http://localhost:5173/admin/home";
         }
         response.sendRedirect("url");
     }
