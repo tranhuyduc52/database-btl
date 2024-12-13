@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Admin_Header from './Admin_Header'; 
 import "../assets/css/Admin_ManageOrder.css";
+import axios from 'axios';
 
 const Admin_ManageOrder = () => {
     const [orderData, setOrderData] = useState([]);
@@ -26,29 +27,22 @@ const Admin_ManageOrder = () => {
 
             try {
                 const res = await axios.get(
-                    "http://localhost:8080/manager/view/order",
+                    "http://localhost:8080/manager/view/orders",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
-                            "Content Type": "application/json",
+                            "Content-Type": "application/json",
                         }
                     }
                 )
                 setOrd(res.data);
+                console.log(res.data[0].producList[0].productResponseDto);
             }
             catch(err) {
                 setErr(err.message);
             }
         }
 
-        const data = [
-            { id: "001", date: "15:00 - 01/12/2024", employee: "Nguyễn Văn A", customer: "Khách hàng 1", orderList: "Phindi cafe x1 47.000đ, Trà sen vàng x1 46.000đ", total: "93.000 VNĐ", payment: "Tiền mặt" },
-            { id: "002", date: "16:00 - 02/12/2024", employee: "Nguyễn Thị B", customer: "Khách hàng 2", orderList: "Trà xanh x1 40.000đ, Phindi choco x1 47.000đ", total: "87.000 VNĐ", payment: "Thẻ ngân hàng" },
-            { id: "003", date: "17:00 - 03/12/2024", employee: "Phạm Văn C", customer: "Khách hàng 3", orderList: "Phindi vanilla x1 48.000đ, Trà sen vàng x1 45.000đ", total: "93.000 VNĐ", payment: "Tiền mặt" },
-            { id: "004", date: "18:00 - 04/12/2024", employee: "Trần Thị D", customer: "Khách hàng 4", orderList: "Trà đậu đỏ x1 42.000đ, Phindi choco x1 47.000đ", total: "89.000 VNĐ", payment: "Chuyển khoản" },
-            { id: "005", date: "19:00 - 05/12/2024", employee: "Lê Minh E", customer: "Khách hàng 5", orderList: "Phindi choco x1 47.000đ, Trà sen vàng x1 45.000đ", total: "92.000 VNĐ", payment: "Tiền mặt" },
-        ];
-        setOrderData(data);
 
         getOrder();
     }, []);
@@ -102,7 +96,7 @@ const Admin_ManageOrder = () => {
                             <th>Danh sách đơn</th>
                             <th>
                                 Tổng tiền
-                                <span className="sort-icon" onClick={sortTotal}>
+                                <span className="sort-icon">
                                     <i className="fa fa-sort"></i>
                                 </span>
                             </th>
@@ -121,22 +115,22 @@ const Admin_ManageOrder = () => {
                         </tr>
                     </tbody>
                     <tbody id="order-data">
-                        {order.map((order, index) => (
+                        {order.map((item, index) => (
                             <tr key={index}>
-                                <td>{order.id}</td>
-                                <td>{order.order_time}</td>
-                                <td>{order.employeeName}</td>
-                                <td>{order.customerName}</td>
+                                <td>{item.id}</td>
+                                <td>{item.order_time}</td>
+                                <td>{item.employeeName}</td>
+                                <td>{item.customerName}</td>
                                 <td>
-                                    {order.producList.map((item, idx) => (
-                                        <>
-                                            {item.productResponseDto.name}, {item.productResponseDto.unit_price},
-                                            {item.productResponseDto.discount}, {item.productResponseDto.rating},
-                                            {item.productResponseDto.description}, {item.productResponseDto.id}
-                                        </>
+                                    {item.producList.map((it, idx) => (
+                                        <div key={idx}>
+                                            {it.productResponseDto.name}, {it.productResponseDto.unit_price},
+                                            {it.productResponseDto.discount}, {it.productResponseDto.rating},
+                                            {it.productResponseDto.description}, {it.productResponseDto.id}
+                                        </div>
                                     ))}
                                 </td>
-                                <td>{order.total_charge}</td>
+                                <td>{item.total_charge}</td>
                                 {/* <td>{order.payment}</td> */}
                             </tr>
                         ))}

@@ -15,8 +15,6 @@
 
 .left-summary {
     margin-left: 725px; 
-
-
 }
 
 .right-summary {
@@ -111,4 +109,21 @@ tr:hover {
 /* Cố định nền cho các cột và các hàng dữ liệu */
 tbody td {
     background-color: #f9f9f9;
+}
+.income-button {
+    height: 40px;
+    border: none;
+    width: 140px;
+    background-color: #1C5C3D;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.income-button:hover {
+    background-color: #0ab663;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
