@@ -45,10 +45,10 @@ function UserInfoPage() {
   );
 }
 
-function UserLogin() {
+function UserLogin({ onLogin }) {
   return(
     <Routes>
-      <Route path="*" element={<UserRegist/>} />
+      <Route path="*" element={<UserRegist />} />
     </Routes>
   );
 };

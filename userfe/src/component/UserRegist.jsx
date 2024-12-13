@@ -133,6 +133,7 @@ function UserLoginInterface({ toggle }) {
             localStorage.setItem("token", res.data.jwtToken);
             localStorage.setItem("roles", res.data.roles[0]);
             const token = localStorage.getItem("token");
+            console.log(token);
             if (res.data.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/customer");
             }
