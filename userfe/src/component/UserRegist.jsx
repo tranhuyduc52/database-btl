@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import React, { createContext }  from 'react';
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -95,7 +96,7 @@ function UserRegistInterface({ toggle }) {
     );
 }
 
-function UserLoginInterface({ toggle }) {
+function UserLoginInterface({ toggle, onLog }) {
     const usernameRef = useRef();
     const passwordRef = useRef();
 
@@ -103,7 +104,7 @@ function UserLoginInterface({ toggle }) {
 
     const [response, setResponse] = useState("");
     const [error, setError] = useState(null);
-
+    const navigate = useNavigate();
     const HandleClick=async (e)=> {
         e.preventDefault();
 
@@ -125,13 +126,16 @@ function UserLoginInterface({ toggle }) {
                     },
                    // withCredentials: true, // Nếu cần gửi cookies/token
                 }
-            );
+            )
             setResponse(res.data);
             const jwtToken = res.data.jwtToken;
             setToken(jwtToken);
-            localStorage.setItem("token", jwtToken);
-            console.log(jwtToken);
-            setError(null); // Reset lỗi nếu có
+            localStorage.setItem("token", res.data.jwtToken);
+            localStorage.setItem("roles", res.data.roles[0]);
+            onLog();
+            if (res.data.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/customer");
+            }
         } catch (err) {
             setError(err.message || "Something went wrong");
         }

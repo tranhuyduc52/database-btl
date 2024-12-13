@@ -5,13 +5,13 @@ import UserInfo from './component/UserInfo';
 import UserProduct from './component/UserProduct';
 import UserRegist from './component/UserRegist';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-function UserLogin() {
+function UserLogin({ onLogin }) {
   return (
-    <>
-      <UserRegist/>
-    </>
+    <Routes>
+      <Route path="*" element={<UserRegist onLog={onLogin}/>} />
+    </Routes>
   );
 };
 
@@ -50,30 +50,50 @@ function UserInfoPage() {
   );
 }
 
-function HomePage() {
+function HomePage({ onLogout }) {
   return (
-    <Router>
       <Routes>
         <Route path='/' element={<UserHomePage/>}/>
         <Route path='/product' element={<UserProductPage/>}/>
         <Route path='/exchange' element={<UserExchangePage/>}/>
         <Route path='/info' element={<UserInfoPage/>}/>
       </Routes>
-    </Router>
   );
 }
 
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [roles, setRoles] = useState(localStorage.getItem("roles"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("roles");
+    setToken(null);
+    setRoles(null);
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedRoles = localStorage.getItem("roles");
+    setToken(storedToken);
+    setRoles(storedRoles);
+  }, []);
 
   return (
-    <>
-      <UserLogin/>
-      {/* Đăng nhặp */}
+    <Router>
+      <Routes>
+        <Route path="/login/*" element={<UserLogin onLogin={() => {
+          setToken(localStorage.getItem("token"));
+          setRoles(localStorage.getItem("roles"));
+        }} />} />
+      </Routes>
+      {token && roles === "ROLE_CUSTOMER" && (
+        <Route path="/*" element={<HomePage onLogout={handleLogout}/>} />
+      )}
 
-
-      {/* <HomePage/> */}
-    </>
+      {!token && <Route path="*" element={<Navigate to="/login" replace />} />}
+    </Router>
   );
 }
 

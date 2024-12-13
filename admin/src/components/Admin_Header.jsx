@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import "../assets/css/Admin_Header.css"; 
 import AvatarImg from "../assets/img/admin-avatar.png"; 
 
@@ -32,6 +33,16 @@ const Admin_Header = () => {
         };
     }, []);
 
+
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("roles");
+        navigate("/login");
+        const token = localStorage.getItem("token");
+        console.log(token);
+    };
+
     return (
         <header className="admin-header">
             {/* Phần trên của header */}
@@ -45,7 +56,9 @@ const Admin_Header = () => {
                             className={dropdownVisible ? "dropdown-menu visible" : "dropdown-menu"}
                             ref={dropdownRef}
                         >
-                            <a href="/" className="dropdown-item">Đăng xuất</a>
+                            <span onClick={handleLogout} className="dropdown-item">
+                                Đăng xuất
+                            </span>
                         </div>
                     </div>
                 </div>
