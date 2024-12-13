@@ -8,6 +8,7 @@ public class shiftMapper {
         var shift = new shift();
         shift.setEndTime(dto.endTime());
         shift.setStartTime(dto.startTime());
+        shift.setHour(dto.hour());
         return shift;
     }
     public shiftResponseDto tShiftResponseDto(shift shift){

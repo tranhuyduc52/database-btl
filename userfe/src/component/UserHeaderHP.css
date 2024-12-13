@@ -19,7 +19,7 @@
 }
 
 .sub-nav-header-homepage {
-    flex: 1;
+    width: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,7 +43,7 @@
     justify-content: center;
 }
 
-.list-nav-header-homepage li {
+.list-nav-header-homepage a, .list-nav-header-homepage li button {
     font-size: 20px;
     color: #fff;
     line-height: 100px;
@@ -51,6 +51,14 @@
     font-weight: lighter;
     box-sizing: unset;
     padding: 0 20px;
+    text-decoration: none;
+    display: flex;
+}
+
+.list-nav-header-homepage li button {
+    background-color: #025048;
+    border: none;
+    font-weight: lighter;
 }
 
 .sub-nav-header-homepage-contain-avt {
@@ -138,4 +146,7 @@
 .header-homepage-under-nav-i2 img {
     height: 250px;
     width: 330px;
+}
+.sub-nav-header-homepage2 {
+    width: 50%;
 }

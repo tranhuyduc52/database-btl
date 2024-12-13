@@ -1,36 +1,52 @@
-.product-title {
+/* Tiêu đề */
+.revenue-title {
     text-align: center;
     margin-top: 140px;
     font-size: 30px;
-    padding-bottom: 20px;
 }
 
-/* Nút chỉnh sửa sản phẩm */
-.edit-product-button {
-    background-color: #18A5A7;
-    color: white;
-    padding: 8px 16px;
-    border: none;
+/* Tổng Doanh thu */
+.revenue-summary {
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-summary {
+    margin-left: 725px; 
+}
+
+.right-summary {
+    display: flex;
+    align-items: center;
+    margin-right: 80px;
+}
+
+.revenue-input {
+    width: 200px;
+    padding: 8px;
+    margin: 5px 0;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    position: absolute;
-    right: 85px;
-    margin-top: -50px;
+    border: 1px solid #ccc;
 }
 
-.edit-product-button:hover {
-    background-color: #16a18b;
+.total-revenue {
+    font-size: 28px;
+    font-weight: bold;
+    border: 2px solid #1C5C3D;
+    padding: 10px;
+    border-radius: 5px;
 }
 
-/* Vùng chứa bảng */
-.product-table-container {
+/* Bảng doanh thu */
+.revenue-table-container {
     max-height: 582px;
     overflow-y: auto;
     margin-top: 20px;
-    border: 1px solid #ddd;
     width: 90%;
     margin: 0 auto;
+    border: 1px solid #ddd;
 }
 
 /* Bảng */
@@ -93,4 +109,21 @@ tr:hover {
 /* Cố định nền cho các cột và các hàng dữ liệu */
 tbody td {
     background-color: #f9f9f9;
+}
+.income-button {
+    height: 40px;
+    border: none;
+    width: 140px;
+    background-color: #1C5C3D;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.income-button:hover {
+    background-color: #0ab663;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }

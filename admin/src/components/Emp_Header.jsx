@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../assets/css/Emp_Header.css"; 
 import AvatarImg from "../assets/img/avatar.svg"; 
 
@@ -29,6 +30,15 @@ const Emp_Header = () => {
         };
     }, []);
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("roles");
+        navigate("/login");
+        const token = localStorage.getItem("token");
+        console.log(token);
+    };
+
     return (
         <header className="site-header">
             <div className="header-container">
@@ -53,7 +63,7 @@ const Emp_Header = () => {
                             ref={dropdownRef}
                         >
                             <a href="/emp/personal-info" className="dropdown-item">Thông tin cá nhân</a>
-                            <a href="/" className="dropdown-item">Đăng xuất</a>
+                            <a onClick={handleLogout} className="dropdown-item">Đăng xuất</a>
                         </div>
                     </div>
                 </div>
