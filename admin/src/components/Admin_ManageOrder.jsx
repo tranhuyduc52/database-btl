@@ -93,7 +93,7 @@ const Admin_ManageOrder = () => {
                             <th>Ngày</th>
                             <th>Tên nhân viên</th>
                             <th>Tên khách hàng</th>
-                            <th>Danh sách đơn</th>
+                            <th className='order-list'>Danh sách đơn</th>
                             <th>
                                 Tổng tiền
                                 <span className="sort-icon">
@@ -109,7 +109,7 @@ const Admin_ManageOrder = () => {
                             <td><input type="text" id="date" className="filter-input" placeholder="Lọc theo ngày" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="employee" className="filter-input" placeholder="Lọc theo nhân viên" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="customer" className="filter-input" placeholder="Lọc theo khách hàng" onChange={handleFilterChange} /></td>
-                            <td><input type="text" id="orderList" className="filter-input" placeholder="Lọc theo danh sách đơn" onChange={handleFilterChange} /></td>
+                            <td className='order-list'><input type="text" id="orderList" className="filter-input" placeholder="Lọc theo danh sách đơn" onChange={handleFilterChange} /></td>
                             <td><input type="text" id="total" className="filter-input" placeholder="Lọc theo tổng tiền" onChange={handleFilterChange} /></td>
                             {/* <td><input type="text" id="payment" className="filter-input" placeholder="Lọc theo phương thức thanh toán" onChange={handleFilterChange} /></td> */}
                         </tr>
@@ -121,12 +121,15 @@ const Admin_ManageOrder = () => {
                                 <td>{item.order_time}</td>
                                 <td>{item.employeeName}</td>
                                 <td>{item.customerName}</td>
-                                <td>
+                                <td className='order-list'>
                                     {item.producList.map((it, idx) => (
-                                        <div key={idx}>
-                                            {it.productResponseDto.name}, {it.productResponseDto.unit_price},
-                                            {it.productResponseDto.discount}, {it.productResponseDto.rating},
-                                            {it.productResponseDto.description}, {it.productResponseDto.id}
+                                        <div key={idx} className='order-list-box'>
+                                            {it.productResponseDto.name ? it.productResponseDto.name : "NULL"},  
+                                            {it.productResponseDto.unit_price ? it.productResponseDto.unit_price : "NULL"}, 
+                                            {it.productResponseDto.discount ? it.productResponseDto.discount : 'NULL'}, 
+                                            {it.productResponseDto.rating ? it.productResponseDto.rating : "NULL"}, 
+                                            {it.productResponseDto.description ? it.productResponseDto.description : "NULL"}, 
+                                            {it.productResponseDto.id ? it.productResponseDto.id : "NULL"} 
                                         </div>
                                     ))}
                                 </td>
