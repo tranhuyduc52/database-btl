@@ -9,7 +9,7 @@ public class productMapper {
         product.setName(dto.name());
         product.setUnit_price(dto.unit_price());
         product.setAvailable(true);
-        product.setDiscount(1);
+        product.setDiscount(0);
         return product;
     }
     public productResponseDto toProductResponseDto(product product){
