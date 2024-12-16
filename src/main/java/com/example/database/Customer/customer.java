@@ -8,7 +8,6 @@ import com.example.database.Order._order;
 import com.example.database.Relationship.exchange;
 import com.example.database.Relationship.review;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
