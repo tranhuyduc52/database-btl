@@ -57,9 +57,15 @@ public class orderMapper {
         List<productInOrderResponseDto> productInOrderResponseDtoList = new ArrayList<>();
         var list = order.getHases();
         for(has i:list){
-            var productInOrderResponseDto = new productInOrderResponseDto(productMapper.toProductResponseDto(i.getProduct()),i.getQuantity());
+            var productInOrderResponseDto = new productInOrderResponseDto(i.getProduct().getName(), i.getQuantity());
             productInOrderResponseDtoList.add(productInOrderResponseDto);
         }
-        return new orderResponseDto(order.getId(),order.getTotal_charge(),order.getOrder_time(),order.getEmployee().getName(),order.getCustomer().getName(),productInOrderResponseDtoList);
+        String cusName = "";
+        String empName="";
+        if(order.getCustomer()==null){ cusName = "Not Found";}
+        else cusName = order.getCustomer().getName();
+        if(order.getEmployee()==null) empName = "Not Found";
+        else empName = order.getEmployee().getName();
+        return new orderResponseDto(order.getId(),order.getTotal_charge(),order.getOrder_time(),empName,cusName,productInOrderResponseDtoList);
     }
 }

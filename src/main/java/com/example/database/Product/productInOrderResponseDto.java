@@ -1,7 +1,7 @@
 package com.example.database.Product;
 
 public record productInOrderResponseDto(
-    productResponseDto productResponseDto,
+    String productName,
     int quantity
 ) {
     

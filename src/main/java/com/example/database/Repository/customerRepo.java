@@ -7,17 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.database.Customer.customer;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 
 
 public interface customerRepo extends JpaRepository<customer,Integer>{
     public customer findByPhoneNumber(String phoneNumber);
-    //@Transactional
+    @Transactional
     public void deleteByPhoneNumber(String phoneNumber);
     @Transactional
     @Modifying
