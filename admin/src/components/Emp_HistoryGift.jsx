@@ -35,13 +35,14 @@ const Emp_HistoryGift = () => {
                     }
                 )
                 setExchange(res.data);
+                console.log(res.data);
             }
             catch(err) {
                 console.log(err.message);
             }
         }
-        
-    })
+        getExchange();
+    }, [])
 
     return (
         <div>
