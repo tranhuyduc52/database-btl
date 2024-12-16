@@ -36,7 +36,7 @@ const Admin_ManageOrder = () => {
                     }
                 )
                 setOrd(res.data);
-                console.log(res.data[0].producList[0].productResponseDto);
+                // console.log(res.data);
             }
             catch(err) {
                 setErr(err.message);
@@ -123,13 +123,15 @@ const Admin_ManageOrder = () => {
                                 <td>{item.customerName}</td>
                                 <td className='order-list'>
                                     {item.producList.map((it, idx) => (
+                                        console.log(it.productName),
                                         <div key={idx} className='order-list-box'>
-                                            {it.productResponseDto.name ? it.productResponseDto.name : "NULL"},  
-                                            {it.productResponseDto.unit_price ? it.productResponseDto.unit_price : "NULL"}, 
+                                            Tên sản phẩm: {it.productName ? it.productName : "NULL"};  
+                                            số lượng: {it.quantity ? it.quantity : "NULL"}
+                                            {/* {it.productResponseDto.unit_price ? it.productResponseDto.unit_price : "NULL"}, 
                                             {it.productResponseDto.discount ? it.productResponseDto.discount : 'NULL'}, 
                                             {it.productResponseDto.rating ? it.productResponseDto.rating : "NULL"}, 
                                             {it.productResponseDto.description ? it.productResponseDto.description : "NULL"}, 
-                                            {it.productResponseDto.id ? it.productResponseDto.id : "NULL"} 
+                                            {it.productResponseDto.id ? it.productResponseDto.id : "NULL"}  */}
                                         </div>
                                     ))}
                                 </td>
