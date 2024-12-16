@@ -57,7 +57,7 @@ public class orderMapper {
         List<productInOrderResponseDto> productInOrderResponseDtoList = new ArrayList<>();
         var list = order.getHases();
         for(has i:list){
-            var productInOrderResponseDto = new productInOrderResponseDto(productMapper.toProductResponseDto(i.getProduct()),i.getQuantity());
+            var productInOrderResponseDto = new productInOrderResponseDto(i.getProduct().getName(), i.getQuantity());
             productInOrderResponseDtoList.add(productInOrderResponseDto);
         }
         String cusName = "";
