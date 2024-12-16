@@ -123,7 +123,6 @@ const Admin_ManageOrder = () => {
                                 <td>{item.customerName}</td>
                                 <td className='order-list'>
                                     {item.producList.map((it, idx) => (
-                                        console.log(it.productName),
                                         <div key={idx} className='order-list-box'>
                                             Tên sản phẩm: {it.productName ? it.productName : "NULL"};  
                                             số lượng: {it.quantity ? it.quantity : "NULL"}
