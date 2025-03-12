@@ -1,9 +1,9 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Shift.shift;
+import com.example.database.model.Shift;
 
-public interface shiftRepo extends JpaRepository<shift,Integer>{
+public interface ShiftRepo extends JpaRepository<Shift,Integer>{
      
 }

@@ -1,13 +1,15 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Relationship.exchange;
-import com.example.database.Customer.customer;
+import com.example.database.model.Customer;
+import com.example.database.model.Exchange;
 
 
-public interface exchangeRepo extends JpaRepository<exchange,Integer>{
-    List<exchange> findByCustomer(customer customer);
+
+
+public interface ExchangeRepo extends JpaRepository<Exchange,Integer>{
+    List<Exchange> findByCustomer(Customer customer);
 }

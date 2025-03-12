@@ -1,4 +1,4 @@
-package com.example.database.Controller;
+package com.example.database.controller;
 
 import java.util.List;
 
@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.database.Employee.employeeCalSalaryDto;
-import com.example.database.Employee.employeeDto;
-import com.example.database.Employee.employeeResponseDto;
-import com.example.database.Employee.employeeUpdateJobDto;
-import com.example.database.Gift.giftDto;
-import com.example.database.Gift.giftResponseDto;
-import com.example.database.Order.orderResponseDto;
-import com.example.database.Product.productDto;
-import com.example.database.Product.productUpdateDto;
-import com.example.database.Relationship.exchangeResponseDto;
-import com.example.database.Relationship.scheduleDto;
-import com.example.database.Relationship.scheduleResponseDto;
-import com.example.database.Service.employeeService;
-import com.example.database.Service.exchangeService;
-import com.example.database.Service.giftService;
-import com.example.database.Service.orderService;
-import com.example.database.Service.productService;
-import com.example.database.Service.scheduleService;
-import com.example.database.Service.shiftService;
-import com.example.database.Shift.shiftDto;
+import com.example.database.dto.request.EmployeeCalSalaryRequest;
+import com.example.database.dto.request.EmployeeRequest;
+import com.example.database.dto.request.EmployeeUpdateJobRequest;
+import com.example.database.dto.request.GiftRequest;
+import com.example.database.dto.request.ProductRequest;
+import com.example.database.dto.request.ProductUpdateRequest;
+import com.example.database.dto.request.ScheduleRequest;
+import com.example.database.dto.request.ShiftRequest;
+import com.example.database.dto.respone.EmployeeResponse;
+import com.example.database.dto.respone.ExchangeResponse;
+import com.example.database.dto.respone.GiftResponse;
+import com.example.database.dto.respone.OrderResponse;
+import com.example.database.dto.respone.ScheduleResponse;
+import com.example.database.service.impl.EmployeeService;
+import com.example.database.service.impl.ExchangeService;
+import com.example.database.service.impl.GiftService;
+import com.example.database.service.impl.OrderService;
+import com.example.database.service.impl.ProductService;
+import com.example.database.service.impl.ScheduleService;
+import com.example.database.service.impl.ShiftService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,28 +47,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/manager")
 @PreAuthorize("hasRole('MANAGER')")
-public class managerController {
+public class ManagerController {
     @Autowired
     DataSource dataSource;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    employeeService employeeService;
+    EmployeeService employeeService;
     @Autowired
-    shiftService shiftService;
+    ShiftService shiftService;
     @Autowired
-    productService productService;
+    ProductService productService;
     @Autowired
-    giftService giftService;
+    GiftService giftService;
     @Autowired
-    scheduleService scheduleService;
+    ScheduleService scheduleService;
     @Autowired
-    orderService orderService;
+    OrderService orderService;
     @Autowired
-    exchangeService exchangeService;
+    ExchangeService exchangeService;
 
     @PostMapping("create/employee")
-    public String createEmployee(@RequestBody employeeDto dto) 
+    public String createEmployee(@RequestBody EmployeeRequest dto) 
     {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         if(manager.userExists(dto.phoneNumber())){return "Username already exists";}
@@ -82,37 +82,37 @@ public class managerController {
         return "Employee is created successfully!";
     }
     @PostMapping("/create/shift")
-    public void createShift(@RequestBody shiftDto dto) {
+    public void createShift(@RequestBody ShiftRequest dto) {
         shiftService.createShift(dto);
     }
     @PostMapping("/create/product")
-    public void createProduct(@RequestBody productDto dto) {
+    public void createProduct(@RequestBody ProductRequest dto) {
         productService.addProduct(dto);
     }
     @PostMapping("/create/gift")
-    public void createGift(@RequestBody giftDto dto) {
+    public void createGift(@RequestBody GiftRequest dto) {
         giftService.addGift(dto);
     }
     @GetMapping("/view/employees")
-    public List<employeeResponseDto> getAllEmployees() {
+    public List<EmployeeResponse> getAllEmployees() {
         return employeeService.findAllEmployee();
     }
     @PostMapping("/create/schedule")
-    public void createSchedule(@RequestBody scheduleDto dto) {
+    public void createSchedule(@RequestBody ScheduleRequest dto) {
         //TODO: process POST request
         scheduleService.createSchedule(dto);
     }
     @GetMapping("/view/schedule")
-    public List<scheduleResponseDto> getAllSchedule() {
+    public List<ScheduleResponse> getAllSchedule() {
         return scheduleService.getAllSchedule();
     }
     @PatchMapping("/update/employee/salary")
-    public void putMethodName(@RequestBody employeeCalSalaryDto dto) {
+    public void putMethodName(@RequestBody EmployeeCalSalaryRequest dto) {
         //TODO: process PUT request
         employeeService.calculateSalary(dto);
     }
     @PatchMapping("/update/employee/job")
-    public void updateEmployeeJob(@RequestBody employeeUpdateJobDto dto) {
+    public void updateEmployeeJob(@RequestBody EmployeeUpdateJobRequest dto) {
         //TODO: process PUT request
         employeeService.updateEmployeeJob(dto);
     }
@@ -121,7 +121,7 @@ public class managerController {
          employeeService.delEmployee(id);
     }
     @GetMapping("/view/orders")
-    public List<orderResponseDto> getOrders() {
+    public List<OrderResponse> getOrders() {
         return orderService.getAllOrder();
     }
     
@@ -136,17 +136,17 @@ public class managerController {
         productService.hideProduct(id);
     }
     @PatchMapping("/update/product")
-    public void updateProduct(@RequestBody productUpdateDto dto) {
+    public void updateProduct(@RequestBody ProductUpdateRequest dto) {
         //TODO: process PUT request
         productService.updateProduct(dto);
     }
     @PatchMapping("/update/gift")
-    public void updateGift(@RequestBody giftResponseDto dto) {
+    public void updateGift(@RequestBody GiftResponse dto) {
         //TODO: process PUT request
         giftService.updateGift(dto);
     }
     @GetMapping("/view/exchange")
-    public List<exchangeResponseDto> getAllExchange() {
+    public List<ExchangeResponse> getAllExchange() {
         return exchangeService.getAllExchange();
     }
     @GetMapping("/income")
