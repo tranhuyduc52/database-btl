@@ -1,10 +1,12 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Embedded.has_embed;
-import com.example.database.Relationship.has;
+import com.example.database.model.Has;
+import com.example.database.model.HasEmbed;
 
-public interface hasRepo extends JpaRepository<has,has_embed>{
+
+
+public interface HasRepo extends JpaRepository<Has,HasEmbed>{
     
 }

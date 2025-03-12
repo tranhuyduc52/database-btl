@@ -1,4 +1,4 @@
-package com.example.database.Configuration;
+package com.example.database.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.example.database.jwt.AuthEntryPointJwt;
-import com.example.database.jwt.AuthTokenFilter;
+import com.example.database.security.AuthEntryPointJwt;
+import com.example.database.security.AuthTokenFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -36,8 +36,8 @@ public class SecurityConfig {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    // @Autowired
+    // private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -90,8 +90,8 @@ public class SecurityConfig {
     
     @Bean
     public PasswordEncoder passwordEncoder(){
-        //return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
+        // return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean

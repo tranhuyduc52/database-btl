@@ -1,4 +1,4 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.database.Gift.gift;
+import com.example.database.model.Gift;
 
 
-public interface giftRepo extends JpaRepository<gift,Integer>{
+public interface GiftRepo extends JpaRepository<Gift,Integer>{
     @Modifying
     @Transactional
-    @Query("update gift a set a.isAvailable=false where a.id=:id")
+    @Query("update Gift a set a.isAvailable=false where a.id=:id")
     void hideGift(@Param("id") int id);
-    List<gift> findByIsAvailable(boolean isAvailable);
+    List<Gift> findByIsAvailable(boolean isAvailable);
     @Modifying
     @Transactional
-    @Query("update gift a set a.name=:name,a.point=:point where a.id=:id")
+    @Query("update Gift a set a.name=:name,a.point=:point where a.id=:id")
     void updateGift(@Param("id") int id,@Param("name") String name,@Param("point") int point);
 }

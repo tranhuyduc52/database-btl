@@ -124,8 +124,8 @@ const Admin_ManageOrder = () => {
                                 <td className='order-list'>
                                     {item.producList.map((it, idx) => (
                                         <div key={idx} className='order-list-box'>
-                                            Tên sản phẩm: {it.productName ? it.productName : "NULL"};  
-                                            số lượng: {it.quantity ? it.quantity : "NULL"}
+                                            Sản phẩm: {it.productName ? it.productName : "NULL"};  
+                                            số lượng bán: {it.quantity ? it.quantity : "NULL"}
                                             {/* {it.productResponseDto.unit_price ? it.productResponseDto.unit_price : "NULL"}, 
                                             {it.productResponseDto.discount ? it.productResponseDto.discount : 'NULL'}, 
                                             {it.productResponseDto.rating ? it.productResponseDto.rating : "NULL"}, 

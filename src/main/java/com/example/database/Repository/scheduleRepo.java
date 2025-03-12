@@ -1,10 +1,10 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Embedded.schedule_embed;
-import com.example.database.Relationship.schedule;
+import com.example.database.model.Schedule;
+import com.example.database.model.ScheduleEmbed;
 
-public interface scheduleRepo extends JpaRepository<schedule,schedule_embed>{
+public interface ScheduleRepo extends JpaRepository<Schedule,ScheduleEmbed>{
     
 }

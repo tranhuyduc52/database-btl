@@ -1,10 +1,10 @@
-package com.example.database.Repository;
+package com.example.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.database.Embedded.review_embed;
-import com.example.database.Relationship.review;
+import com.example.database.model.Review;
+import com.example.database.model.ReviewEmbed;
 
-public interface reviewRepo extends JpaRepository<review,review_embed>{
+public interface ReviewRepo extends JpaRepository<Review,ReviewEmbed>{
     
 }

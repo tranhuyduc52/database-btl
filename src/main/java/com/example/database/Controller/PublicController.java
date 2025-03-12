@@ -1,4 +1,4 @@
-package com.example.database.Controller;
+package com.example.database.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -26,17 +26,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.database.Customer.customerDTO;
-import com.example.database.Gift.giftResponseDto;
-import com.example.database.Product.productResponseDto;
-import com.example.database.Relationship.exchangeResponseDto;
-import com.example.database.Relationship.reviewResponseDto;
-import com.example.database.Service.customerService;
-import com.example.database.Service.giftService;
-import com.example.database.Service.productService;
-import com.example.database.jwt.JwtUtils;
-import com.example.database.jwt.LoginRequest;
-import com.example.database.jwt.LoginResponse;
+import com.example.database.dto.request.CustomerRequest;
+import com.example.database.dto.respone.GiftResponse;
+import com.example.database.dto.respone.ProductResponse;
+import com.example.database.dto.respone.ReviewResponse;
+import com.example.database.security.JwtUtils;
+import com.example.database.security.LoginRequest;
+import com.example.database.security.LoginResponse;
+import com.example.database.service.impl.CustomerService;
+import com.example.database.service.impl.GiftService;
+import com.example.database.service.impl.ProductService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,15 +51,15 @@ public class PublicController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired 
-    private customerService customerService;
+    private CustomerService customerService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     DataSource dataSource;
     @Autowired
-    private productService productService;
+    private ProductService productService;
     @Autowired
-    private giftService giftService;
+    private GiftService giftService;
     
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -90,7 +89,7 @@ public class PublicController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("customer/createAccount")
-    public String createCustomer(@RequestBody customerDTO dto) 
+    public String createCustomer(@RequestBody CustomerRequest dto) 
     {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         if(manager.userExists(dto.phoneNumber())){return "Username already exists";}
@@ -119,15 +118,15 @@ public class PublicController {
     }
 
     @GetMapping("/menu")
-    public List<productResponseDto> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
     @GetMapping("/gift/view")
-    public List<giftResponseDto> getAllGifts() {
+    public List<GiftResponse> getAllGifts() {
         return giftService.findAllGift();
     }
     @GetMapping("/product/review")
-    public List<reviewResponseDto> getProductReview(@RequestParam int productId) {
+    public List<ReviewResponse> getProductReview(@RequestParam int productId) {
         return productService.getReview(productId);
         //return new String();
     }
